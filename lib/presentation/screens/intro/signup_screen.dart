@@ -52,6 +52,7 @@ class SignUpScreen extends StatelessWidget {
                   const SignUpForm(),
                   SizedBox(height: 16.h),
                   termsAndConditionsText(),
+                  SizedBox(height: 37.h),
                 ],
               ),
             ),
