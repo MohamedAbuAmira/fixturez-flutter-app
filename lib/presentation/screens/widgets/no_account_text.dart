@@ -10,15 +10,17 @@ class NoAccountText extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Don’t have an account? ",
-            style: AppTextStyles.PoppinsBody1(textColor: AppColors.darkColor)),
+        Text("Don’t have an account?",
+            style:
+                AppTextStyles.PoppinsSubtitle(textColor: AppColors.darkColor)),
         TextButton(
           onPressed: () {
             Navigator.pushNamed(context, AppRouter.signup);
           },
           child: Text(
             "Sign Up",
-            style: AppTextStyles.PoppinsBody1(textColor: AppColors.darkColor),
+            style: AppTextStyles.PoppinsSubtitle(
+                textColor: AppColors.secondaryColor),
           ),
         ),
       ],

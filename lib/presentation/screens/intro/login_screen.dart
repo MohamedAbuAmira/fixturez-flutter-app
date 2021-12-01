@@ -20,16 +20,66 @@ class LoginScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text('Welcome to FixTurez',
-                      style: AppTextStyles.PoppinsH1(
-                          textColor: AppColors.darkColor)),
-                  Text(
-                      'want to shopping with us please login to Fixturez store',
-                      style: AppTextStyles.PoppinsBody2(
-                          textColor: AppColors.primaryGreyColor)),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Welcome to FixTurez',
+                        textAlign: TextAlign.start,
+                        style: AppTextStyles.PoppinsH1(
+                            textColor: AppColors.darkColor)),
+                  ),
+                  SizedBox(height: 16.h),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: SizedBox(
+                      width: 315.w,
+                      height: 48.h,
+                      child: Text(
+                          'Want to shopping with us please login to Fixturez store',
+                          overflow: TextOverflow.fade,
+                          style: AppTextStyles.PoppinsBody2(
+                              textColor: AppColors.primaryGreyColor)),
+                    ),
+                  ),
                   SizedBox(height: 50.h),
                   const LoginInForm(),
-                  SizedBox(height: 48.h),
+                  SizedBox(height: 8.h),
+                  Container(
+                    height: 58.h,
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRouter.forgotPassword);
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: AppTextStyles.PoppinsBody2(
+                            textColor: AppColors.secondaryColor),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    "Or connect with",
+                    style: AppTextStyles.PoppinsFootnote(
+                        textColor: AppColors.primaryGreyColor),
+                  ),
+                  SizedBox(height: 30.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {},
+                          child: AppIcons.customIcon(iconName: 'gplus')),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                      InkWell(
+                          onTap: () {},
+                          child: AppIcons.customIcon(iconName: 'fb')),
+                    ],
+                  ),
+                  SizedBox(height: 39.h),
+                  const NoAccountText(),
                 ],
               ),
             ),
@@ -71,16 +121,19 @@ class _LoginInFormState extends State<LoginInForm> {
       children: [
         InputTextField(
           controller: _emailTextcontroller,
-          hintText: "Enter your email",
+          hintText: "Enter your Email",
           labelText: "Email",
           textInputType: TextInputType.emailAddress,
         ),
         SizedBox(height: 25.h),
         InputTextField(
           controller: _passwordTextcontroller,
-          hintText: "Enter your password",
+          hintText: "Enter your Password",
           labelText: "Password",
-          suffixIcon: AppIcons.customIcon(iconName: 'Heart'),
+          editingTextColor: AppColors.primaryColor,
+          cursorColor: AppColors.primaryColor,
+          suffixIcon: AppIcons.customIcon(
+              iconName: 'ic_eye_slash', iconColor: AppColors.primaryColor),
           textButtonAsSuffixIcon: TextButton(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               onPressed: () {
@@ -90,11 +143,7 @@ class _LoginInFormState extends State<LoginInForm> {
           obscureText: true,
         ),
         SizedBox(
-          height: 40.h,
-        ),
-        const NoAccountText(),
-        SizedBox(
-          height: 95.h,
+          height: 20.h,
         ),
         DefaultButton(press: performLogin, text: "Log In"),
       ],
@@ -117,7 +166,6 @@ class _LoginInFormState extends State<LoginInForm> {
   }
 
   void login() async {
-    print(_emailTextcontroller.text);
     await SharedPrefController().save(email: _emailTextcontroller.text);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, AppRouter.home);

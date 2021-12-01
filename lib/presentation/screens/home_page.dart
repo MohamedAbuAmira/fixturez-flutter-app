@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       // appBar: AppBar(
       //   iconTheme: Theme.of(context).iconTheme,
       //   backgroundColor: Colors.transparent,
@@ -64,16 +65,24 @@ class HomePage extends StatelessWidget {
           builder: (BuildContext context, int value, _) {
             return screens[value];
           }),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10.0,
-        child: _bottomNavigationBar(
-          onItemSelected: _onNavigationItemSelected,
+      extendBody: true,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+        child: BottomAppBar(
+          elevation: 10,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 10.0,
+          child: _bottomNavigationBar(
+            onItemSelected: _onNavigationItemSelected,
+          ),
         ),
       ),
       floatingActionButton: GlowingActionButton(
         color: AppColors.secondaryColor,
-        iconName: 'Discount',
+        iconName: 'ic_Discount',
         onPressed: () {
           print('TODO: Glowing action button');
         },
@@ -106,32 +115,49 @@ class _bottomNavigationBarState extends State<_bottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _bottomNavigationItem(
-          index: 0,
-          isSelected: selectedIndex == 0,
-          onTap: handleItemSelected,
-          iconName: 'Home',
+        Row(
+          children: [
+            _bottomNavigationItem(
+              index: 0,
+              isSelected: selectedIndex == 0,
+              onTap: handleItemSelected,
+              iconName: 'ic_Home',
+            ),
+            SizedBox(
+              width: 42.w,
+            ),
+            _bottomNavigationItem(
+              index: 1,
+              isSelected: selectedIndex == 1,
+              onTap: handleItemSelected,
+              iconName: 'ic_Category',
+            ),
+          ],
         ),
-        _bottomNavigationItem(
-          index: 1,
-          isSelected: selectedIndex == 1,
-          onTap: handleItemSelected,
-          iconName: 'Category',
+        SizedBox(
+          width: 132.w,
         ),
-        _bottomNavigationItem(
-          index: 2,
-          isSelected: selectedIndex == 2,
-          onTap: handleItemSelected,
-          iconName: 'card',
-        ),
-        _bottomNavigationItem(
-          index: 3,
-          isSelected: selectedIndex == 3,
-          onTap: handleItemSelected,
-          iconName: 'Profile',
-        ),
+        Row(
+          children: [
+            _bottomNavigationItem(
+              index: 2,
+              isSelected: selectedIndex == 2,
+              onTap: handleItemSelected,
+              iconName: 'ic_cart',
+            ),
+            SizedBox(
+              width: 42.w,
+            ),
+            _bottomNavigationItem(
+              index: 3,
+              isSelected: selectedIndex == 3,
+              onTap: handleItemSelected,
+              iconName: 'ic_Profile',
+            ),
+          ],
+        )
       ],
     );
   }
@@ -160,27 +186,19 @@ class _bottomNavigationItem extends StatelessWidget {
         onTap(index);
       },
       child: SizedBox(
-        width: 70,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        height: 84.h,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Visibility(
-                visible: isSelected ? true : false,
-                child: Container(
-                  height: 5.5.w,
-                  width: 11.h,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(-180),
-                        bottomLeft: Radius.circular(-180)),
-                  ),
-                )),
-            AppIcons.customIcon(
-              iconName: iconName,
-              iconColor:
-                  isSelected ? AppColors.primaryColor.withOpacity(0.30) : null,
+            Positioned(
+              top: 0,
+              child: Visibility(
+                  visible: isSelected ? true : false,
+                  child: AppIcons.customIcon(iconName: 'Ellipse 18')),
             ),
+            isSelected
+                ? AppIcons.customIcon(iconName: '${iconName}_fill')
+                : AppIcons.customIcon(iconName: iconName)
           ],
         ),
       ),

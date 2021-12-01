@@ -22,8 +22,7 @@ class DefaultButton extends StatelessWidget {
           primary: AppColors.primaryColor,
           onPrimary: Colors.white,
           shadowColor: AppColors.tertiaryGreyColor,
-          textStyle: AppTextStyles.PoppinsBody1(
-              textColor: AppColors.tertiaryGreyColor),
+          textStyle: AppTextStyles.PoppinsH4(textColor: AppColors.whiteColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),
           ),

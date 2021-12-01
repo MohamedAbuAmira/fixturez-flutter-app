@@ -4,6 +4,9 @@ import 'package:fixturez/presentation/screens/intro/login_screen.dart';
 import 'package:fixturez/presentation/screens/intro/luanch_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/intro/forgot_password_screen.dart';
+import '../screens/intro/signup_screen.dart';
+
 class AppRouter {
   static const String launch = 'launch_screen';
   static const String login = '/login_screen';
@@ -23,14 +26,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
         );
-      // case forgotPassword:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const ForgotPasswordScreen(),
-      //   );
-      // case signup:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const SignUpScreen(),
-      //   );
+      case forgotPassword:
+        return MaterialPageRoute(
+          builder: (_) => const ForgotPasswordScreen(),
+        );
+      case signup:
+        return MaterialPageRoute(
+          builder: (_) => const SignUpScreen(),
+        );
       case home:
         return MaterialPageRoute(
           builder: (_) => HomePage(),
