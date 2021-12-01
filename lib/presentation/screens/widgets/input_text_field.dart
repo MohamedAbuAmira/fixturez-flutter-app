@@ -36,6 +36,7 @@ class InputTextField extends StatelessWidget {
       cursorColor: cursorColor,
       style: AppTextStyles.PoppinsBody2(textColor: editingTextColor),
       decoration: InputDecoration(
+        isDense: true,
         labelStyle:
             AppTextStyles.PoppinsBody1(textColor: AppColors.secondaryGreyColor),
         hintStyle:
@@ -44,7 +45,7 @@ class InputTextField extends StatelessWidget {
         hintText: hintText,
         alignLabelWithHint: true,
         suffixIcon: suffixIcon,
-        suffixIconConstraints: BoxConstraints(maxHeight: 28.h, maxWidth: 28.w),
+        suffixIconConstraints: BoxConstraints(minHeight: 28.h, minWidth: 28.w),
         // floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.fromLTRB(2.w, 16.h, 14.w, 20.h),
         // enabledBorder: const UnderlineInputBorder(
