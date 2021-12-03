@@ -1,16 +1,36 @@
+import 'package:fixturez/data/repository/repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/prefs/shared_pref_controller.dart';
+import '../../../data/models/models.dart';
+import '../../../data/web_services/web_services.dart';
 import '../../router/app_router.dart';
 import '../widgets/widgets.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  late CityRepository cityRepository;
+  late Future<List<City>> cities;
+
+  @override
+  void initState() {
+    cityRepository = CityRepository(CityWebService());
+    cities = cityRepository.getAllCities();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(cities);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -97,9 +117,24 @@ class _SignUpFormState extends State<SignUpForm> {
   late TextEditingController _phoneNumberTextcontroller;
   late TextEditingController _nameTextcontroller;
 
+  // late CityWebService cityWebService;
+  // late CityRepository cityRepository;
+  // late Future<List<City>> cities;
+  // cityRepository = CityRepository(CityWebService());
+  // cities = cityRepository.getAllCities();
+  // void convertFutureListToList() async {
+  //   Future<List> _futureOfList = _getList();
+  //   List list = await _futureOfList;
+  //   print(list);
+  // }
+
   @override
   void initState() {
     super.initState();
+    // cityWebService = CityWebService();
+    // cityRepository = CityRepository(CityWebService());
+    // cities = cityRepository.getAllCities();
+
     _emailTextcontroller = TextEditingController();
     _passwordTextcontroller = TextEditingController();
     _conformedPasswordTextcontroller = TextEditingController();
@@ -119,8 +154,12 @@ class _SignUpFormState extends State<SignUpForm> {
     super.dispose();
   }
 
+  dynamic cityDropDownValue;
+  dynamic genderDropDownValue;
+  Color buttonColor = AppColors.secondaryColor;
   @override
   Widget build(BuildContext context) {
+    // print(cities);
     return Column(
       children: [
         InputTextField(
@@ -147,8 +186,12 @@ class _SignUpFormState extends State<SignUpForm> {
           controller: _phoneNumberTextcontroller,
           hintText: "Enter your Phone Number",
           labelText: "Phone Number",
-          textInputType: TextInputType.name,
+          textInputType: TextInputType.phone,
         ),
+        SizedBox(height: 25.h),
+        selectCityDropDownButton(),
+        SizedBox(height: 25.h),
+        selectGenderDropDownButton(),
         SizedBox(height: 25.h),
         InputTextField(
           controller: _passwordTextcontroller,
@@ -172,14 +215,80 @@ class _SignUpFormState extends State<SignUpForm> {
         SizedBox(
           height: 20.h,
         ),
-        DefaultButton(press: performLogin, text: "Sign Up"),
+        DefaultButton(press: performSingup, text: "Sign Up"),
       ],
     );
   }
 
-  void performLogin() {
+  DropdownButton<String> selectGenderDropDownButton() {
+    return DropdownButton<String>(
+      isExpanded: true,
+      hint: Text(
+        'Select your Gender',
+        style:
+            AppTextStyles.PoppinsBody1(textColor: AppColors.secondaryGreyColor),
+      ),
+      value: genderDropDownValue,
+      elevation: 10,
+      style: const TextStyle(color: AppColors.darkColor),
+      underline: Container(
+        height: 1,
+        color: AppColors.primaryColor,
+      ),
+      iconEnabledColor: AppColors.primaryGreyColor,
+      onChanged: (String? newValue) {
+        setState(() {
+          genderDropDownValue = newValue!;
+          print(genderDropDownValue);
+        });
+      },
+      items: const [
+        DropdownMenuItem(
+          child: Text("Male"),
+          value: 'M',
+        ),
+        DropdownMenuItem(
+          child: Text("Femal"),
+          value: 'F',
+        )
+      ],
+    );
+  }
+
+  DropdownButton<String> selectCityDropDownButton() {
+    return DropdownButton<String>(
+      isExpanded: true,
+      hint: Text(
+        'Select your City',
+        style:
+            AppTextStyles.PoppinsBody1(textColor: AppColors.secondaryGreyColor),
+      ),
+      value: cityDropDownValue,
+      elevation: 10,
+      style: const TextStyle(color: AppColors.darkColor),
+      underline: Container(
+        height: 1,
+        color: AppColors.primaryColor,
+      ),
+      iconEnabledColor: AppColors.primaryGreyColor,
+      onChanged: (String? newValue) {
+        setState(() {
+          cityDropDownValue = newValue!;
+        });
+      },
+      items: <String>['Gaza', 'Two', 'Free', 'Four']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+
+  void performSingup() {
     if (chechData()) {
-      return login();
+      return singup();
     }
   }
 
@@ -194,9 +303,10 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  void login() async {
-    await SharedPrefController().save(email: _emailTextcontroller.text);
-    Future.delayed(const Duration(seconds: 1), () {
+  void singup() async {
+    await SharedPrefController()
+        .savePhoneNumber(phone: _phoneNumberTextcontroller.text);
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, AppRouter.home);
     });
   }

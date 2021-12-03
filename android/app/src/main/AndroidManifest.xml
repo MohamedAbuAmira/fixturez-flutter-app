@@ -2,7 +2,9 @@
     package="com.elancer.fixturez">
    <application
         android:label="fixturez"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:userCleartextTraffic="true">
+       
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

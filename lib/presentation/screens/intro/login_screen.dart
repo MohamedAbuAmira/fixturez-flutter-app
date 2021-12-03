@@ -99,19 +99,19 @@ class LoginInForm extends StatefulWidget {
 }
 
 class _LoginInFormState extends State<LoginInForm> {
-  late TextEditingController _emailTextcontroller;
+  late TextEditingController _phoneNumberTextController;
   late TextEditingController _passwordTextcontroller;
 
   @override
   void initState() {
     super.initState();
-    _emailTextcontroller = TextEditingController();
+    _phoneNumberTextController = TextEditingController();
     _passwordTextcontroller = TextEditingController();
   }
 
   @override
   void dispose() {
-    _emailTextcontroller.dispose();
+    _phoneNumberTextController.dispose();
     _passwordTextcontroller.dispose();
     super.dispose();
   }
@@ -121,10 +121,10 @@ class _LoginInFormState extends State<LoginInForm> {
     return Column(
       children: [
         InputTextField(
-          controller: _emailTextcontroller,
-          hintText: "Enter your Email",
-          labelText: "Email",
-          textInputType: TextInputType.emailAddress,
+          controller: _phoneNumberTextController,
+          hintText: "Enter your Phone Number",
+          labelText: "Phone Number",
+          textInputType: TextInputType.phone,
         ),
         SizedBox(height: 25.h),
         InputTextField(
@@ -158,7 +158,7 @@ class _LoginInFormState extends State<LoginInForm> {
   }
 
   bool chechData() {
-    if (_emailTextcontroller.text.isNotEmpty &&
+    if (_phoneNumberTextController.text.isNotEmpty &&
         _passwordTextcontroller.text.isNotEmpty) {
       return true;
     } else {
@@ -167,7 +167,8 @@ class _LoginInFormState extends State<LoginInForm> {
   }
 
   void login() async {
-    await SharedPrefController().save(email: _emailTextcontroller.text);
+    await SharedPrefController()
+        .savePhoneNumber(phone: _phoneNumberTextController.text);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, AppRouter.home);
     });
