@@ -5,7 +5,7 @@ import 'end_points.dart';
 
 class CityWebService {
   Future<List<dynamic>> getCities() async {
-    var url = Uri.parse('https://smart-store.mr-dev.tech/api/home');
+    var url = Uri.parse('https://smart-store.mr-dev.tech/api/cities');
     var response = await http.get(url);
     print(response.statusCode);
 

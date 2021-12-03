@@ -1,3 +1,4 @@
+import 'package:fixturez/core/helpers/helpers.dart';
 import 'package:fixturez/data/repository/repository.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,15 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with Helpers {
   late CityRepository cityRepository;
+  late CityWebService cityWebService;
   late Future<List<City>> cities;
 
   @override
   void initState() {
-    cityRepository = CityRepository(CityWebService());
+    cityWebService = CityWebService();
+    cityRepository = CityRepository(cityWebService);
     cities = cityRepository.getAllCities();
     super.initState();
   }
@@ -109,7 +112,7 @@ class SignUpForm extends StatefulWidget {
   _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _SignUpFormState extends State<SignUpForm> with Helpers {
   late TextEditingController _emailTextcontroller;
   late TextEditingController _passwordTextcontroller;
   late TextEditingController _conformedPasswordTextcontroller;
@@ -154,8 +157,8 @@ class _SignUpFormState extends State<SignUpForm> {
     super.dispose();
   }
 
-  dynamic cityDropDownValue;
-  dynamic genderDropDownValue;
+  dynamic _cityDropDownValue;
+  dynamic _genderDropDownValue;
   Color buttonColor = AppColors.secondaryColor;
   @override
   Widget build(BuildContext context) {
@@ -215,7 +218,8 @@ class _SignUpFormState extends State<SignUpForm> {
         SizedBox(
           height: 20.h,
         ),
-        DefaultButton(press: performSingup, text: "Sign Up"),
+        DefaultButton(
+            press: () async => await performSingup(), text: "Sign Up"),
       ],
     );
   }
@@ -228,7 +232,7 @@ class _SignUpFormState extends State<SignUpForm> {
         style:
             AppTextStyles.PoppinsBody1(textColor: AppColors.secondaryGreyColor),
       ),
-      value: genderDropDownValue,
+      value: _genderDropDownValue,
       elevation: 10,
       style: const TextStyle(color: AppColors.darkColor),
       underline: Container(
@@ -238,8 +242,8 @@ class _SignUpFormState extends State<SignUpForm> {
       iconEnabledColor: AppColors.primaryGreyColor,
       onChanged: (String? newValue) {
         setState(() {
-          genderDropDownValue = newValue!;
-          print(genderDropDownValue);
+          _genderDropDownValue = newValue!;
+          print(_genderDropDownValue);
         });
       },
       items: const [
@@ -263,7 +267,7 @@ class _SignUpFormState extends State<SignUpForm> {
         style:
             AppTextStyles.PoppinsBody1(textColor: AppColors.secondaryGreyColor),
       ),
-      value: cityDropDownValue,
+      value: _cityDropDownValue,
       elevation: 10,
       style: const TextStyle(color: AppColors.darkColor),
       underline: Container(
@@ -273,7 +277,7 @@ class _SignUpFormState extends State<SignUpForm> {
       iconEnabledColor: AppColors.primaryGreyColor,
       onChanged: (String? newValue) {
         setState(() {
-          cityDropDownValue = newValue!;
+          _cityDropDownValue = newValue!;
         });
       },
       items: <String>['Gaza', 'Two', 'Free', 'Four']
@@ -286,9 +290,9 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void performSingup() {
+  Future<void> performSingup() async {
     if (chechData()) {
-      return singup();
+      await singup();
     }
   }
 
@@ -296,18 +300,38 @@ class _SignUpFormState extends State<SignUpForm> {
     if (_emailTextcontroller.text.isNotEmpty &&
         _passwordTextcontroller.text.isNotEmpty &&
         _nameTextcontroller.text.isNotEmpty &&
-        _conformedPasswordTextcontroller.text.isNotEmpty) {
+        _conformedPasswordTextcontroller.text.isNotEmpty &&
+        _phoneNumberTextcontroller.text.isNotEmpty &&
+        _cityDropDownValue != null &&
+        _genderDropDownValue != null) {
       return true;
     } else {
+      showSnackBar(
+          context: context, message: "Enter required data", error: true);
       return false;
     }
   }
 
-  void singup() async {
-    await SharedPrefController()
-        .savePhoneNumber(phone: _phoneNumberTextcontroller.text);
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, AppRouter.home);
-    });
+  Future<void> singup() async {
+    bool status = await UserWebService().register(context, user: user);
+    print(status);
+    // await SharedPrefController()
+    //     .savePhoneNumber(phone: _phoneNumberTextcontroller.text);
+    if (status) {
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushReplacementNamed(context, AppRouter.home);
+      });
+    } else {}
+  }
+
+  User get user {
+    User user = User();
+    user.name = _nameTextcontroller.text;
+    user.mobile = _phoneNumberTextcontroller.text;
+    user.password = _passwordTextcontroller.text;
+    user.gender = _genderDropDownValue;
+    // user.cityId = _cityDropDownValue;
+    user.cityId = 2;
+    return user;
   }
 }

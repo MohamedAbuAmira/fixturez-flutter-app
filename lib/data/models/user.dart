@@ -6,6 +6,7 @@ class User {
   late String? email;
   late String mobile;
   late String gender;
+  late String password;
   late bool active;
   late bool verified;
   late int cityId;
