@@ -19,21 +19,27 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with Helpers {
-  late CityRepository cityRepository;
-  late CityWebService cityWebService;
-  late Future<List<City>> cities;
+  List<City> cities = [];
+  void fetchCities() async {
+    final CityRepository cityRepository = CityRepository(CityWebService());
+    Future<List<City>> futureCities = cityRepository.getAllCities();
+
+    List<City> _cities = await futureCities;
+    setState(() {
+      cities = [..._cities];
+    });
+  }
 
   @override
   void initState() {
-    cityWebService = CityWebService();
-    cityRepository = CityRepository(cityWebService);
-    cities = cityRepository.getAllCities();
     super.initState();
+    setState(() {
+      fetchCities();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(cities);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -72,7 +78,9 @@ class _SignUpScreenState extends State<SignUpScreen> with Helpers {
                     ),
                   ),
                   SizedBox(height: 50.h),
-                  const SignUpForm(),
+                  SignUpForm(
+                    cities: cities,
+                  ),
                   SizedBox(height: 16.h),
                   termsAndConditionsText(),
                   SizedBox(height: 37.h),
@@ -106,7 +114,8 @@ class _SignUpScreenState extends State<SignUpScreen> with Helpers {
 }
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({Key? key}) : super(key: key);
+  const SignUpForm({Key? key, required this.cities}) : super(key: key);
+  final List<City> cities;
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -120,23 +129,9 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
   late TextEditingController _phoneNumberTextcontroller;
   late TextEditingController _nameTextcontroller;
 
-  // late CityWebService cityWebService;
-  // late CityRepository cityRepository;
-  // late Future<List<City>> cities;
-  // cityRepository = CityRepository(CityWebService());
-  // cities = cityRepository.getAllCities();
-  // void convertFutureListToList() async {
-  //   Future<List> _futureOfList = _getList();
-  //   List list = await _futureOfList;
-  //   print(list);
-  // }
-
   @override
   void initState() {
     super.initState();
-    // cityWebService = CityWebService();
-    // cityRepository = CityRepository(CityWebService());
-    // cities = cityRepository.getAllCities();
 
     _emailTextcontroller = TextEditingController();
     _passwordTextcontroller = TextEditingController();
@@ -162,7 +157,6 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
   Color buttonColor = AppColors.secondaryColor;
   @override
   Widget build(BuildContext context) {
-    // print(cities);
     return Column(
       children: [
         InputTextField(
@@ -243,7 +237,6 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
       onChanged: (String? newValue) {
         setState(() {
           _genderDropDownValue = newValue!;
-          print(_genderDropDownValue);
         });
       },
       items: const [
@@ -260,6 +253,17 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
   }
 
   DropdownButton<String> selectCityDropDownButton() {
+    List<String> citiesNameEng = [];
+    for (City city in widget.cities) {
+      citiesNameEng.add(city.cityNameEn);
+    }
+
+    int getCityId(String cityName) {
+      final City _city =
+          widget.cities.firstWhere((element) => element.cityNameEn == cityName);
+      return _city.id;
+    }
+
     return DropdownButton<String>(
       isExpanded: true,
       hint: Text(
@@ -280,8 +284,7 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
           _cityDropDownValue = newValue!;
         });
       },
-      items: <String>['Gaza', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
+      items: citiesNameEng.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
