@@ -7,9 +7,8 @@ class CityRepository {
   CityRepository(this.cityWebService);
 
   Future<List<City>> getAllCities() async {
+    
     final cities = await cityWebService.getCities();
-    print(
-        'from repository${cities.map((city) => City.fromJson(city)).toList()}');
     return cities.map((city) => City.fromJson(city)).toList();
   }
 }
