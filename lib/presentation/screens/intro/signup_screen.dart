@@ -128,6 +128,11 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
   late TextEditingController _userNameTextcontroller;
   late TextEditingController _phoneNumberTextcontroller;
   late TextEditingController _nameTextcontroller;
+  int getCityId(String cityName) {
+    final City _city =
+        widget.cities.firstWhere((element) => element.cityNameEn == cityName);
+    return _city.id;
+  }
 
   @override
   void initState() {
@@ -257,13 +262,6 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
     for (City city in widget.cities) {
       citiesNameEng.add(city.cityNameEn);
     }
-
-    int getCityId(String cityName) {
-      final City _city =
-          widget.cities.firstWhere((element) => element.cityNameEn == cityName);
-      return _city.id;
-    }
-
     return DropdownButton<String>(
       isExpanded: true,
       hint: Text(
@@ -316,25 +314,26 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
   }
 
   Future<void> singup() async {
-    bool status = await UserWebService().register(context, user: user);
-    print(status);
-    // await SharedPrefController()
-    //     .savePhoneNumber(phone: _phoneNumberTextcontroller.text);
-    if (status) {
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pushReplacementNamed(context, AppRouter.home);
+    Map authBaseResponse =
+        await UserWebService().register(context, registerUser: getRegisterUser);
+
+    if (authBaseResponse['status']) {
+      final String activationCode = authBaseResponse['code'].toString();
+
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamed(context, AppRouter.activateAccount,
+            arguments: activationCode);
       });
     } else {}
   }
 
-  User get user {
-    User user = User();
-    user.name = _nameTextcontroller.text;
-    user.mobile = _phoneNumberTextcontroller.text;
-    user.password = _passwordTextcontroller.text;
-    user.gender = _genderDropDownValue;
-    // user.cityId = _cityDropDownValue;
-    user.cityId = 2;
-    return user;
+  RegisterUser get getRegisterUser {
+    final RegisterUser registerUser = RegisterUser();
+    registerUser.name = _nameTextcontroller.text;
+    registerUser.mobile = _phoneNumberTextcontroller.text;
+    registerUser.password = _passwordTextcontroller.text;
+    registerUser.gender = _genderDropDownValue;
+    registerUser.cityId = getCityId(_cityDropDownValue).toString();
+    return registerUser;
   }
 }

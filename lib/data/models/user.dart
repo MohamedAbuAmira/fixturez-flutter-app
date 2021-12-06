@@ -6,7 +6,6 @@ class User {
   late String? email;
   late String mobile;
   late String gender;
-  late String password;
   late bool active;
   late bool verified;
   late int cityId;
@@ -35,25 +34,4 @@ class User {
     refreshToken = json['refresh_token'];
     city = City.fromJson(json['city']);
   }
-
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['id'] = this.id;
-  //   data['name'] = this.name;
-  //   data['email'] = this.email;
-  //   data['mobile'] = this.mobile;
-  //   data['gender'] = this.gender;
-  //   data['active'] = this.active;
-  //   data['verified'] = this.verified;
-  //   data['city_id'] = this.cityId;
-  //   data['store_id'] = this.storeId;
-  //   data['fcm_token'] = this.fcmToken;
-  //   data['token'] = this.token;
-  //   data['token_type'] = this.tokenType;
-  //   data['refresh_token'] = this.refreshToken;
-  //   if (this.city != null) {
-  //     data['city'] = this.city.toJson();
-  //   }
-  //   return data;
-  // }
 }

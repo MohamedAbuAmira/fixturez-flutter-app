@@ -3,8 +3,7 @@
    <application
         android:label="fixturez"
         android:icon="@mipmap/ic_launcher"
-        android:userCleartextTraffic="true">
-       
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -39,6 +38,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <uses-permission android:name="android.permission.INTERNET" />
     </application>
 </manifest>

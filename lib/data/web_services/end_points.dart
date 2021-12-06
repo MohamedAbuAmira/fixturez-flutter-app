@@ -6,4 +6,5 @@ class ApiEndPoints {
   static const _authUrl = _apiUrl + "auth/";
   static const loginUrl = _authUrl + "login";
   static const registerUrl = _authUrl + "register";
+  static const activateUrl = _authUrl + "activate";
 }

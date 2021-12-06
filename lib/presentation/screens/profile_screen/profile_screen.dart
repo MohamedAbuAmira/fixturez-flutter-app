@@ -11,7 +11,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Center(
           child: Container(
-        child: Text("Profile"),
+        child: const Text("Profile"),
       )),
     );
   }

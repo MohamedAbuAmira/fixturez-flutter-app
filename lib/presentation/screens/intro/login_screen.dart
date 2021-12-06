@@ -1,5 +1,7 @@
 import 'package:fixturez/core/constants/constants.dart';
+import 'package:fixturez/core/helpers/helpers.dart';
 import 'package:fixturez/core/prefs/shared_pref_controller.dart';
+import 'package:fixturez/data/web_services/user_web_service.dart';
 import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:fixturez/presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +100,7 @@ class LoginInForm extends StatefulWidget {
   _LoginInFormState createState() => _LoginInFormState();
 }
 
-class _LoginInFormState extends State<LoginInForm> {
+class _LoginInFormState extends State<LoginInForm> with Helpers {
   late TextEditingController _phoneNumberTextController;
   late TextEditingController _passwordTextcontroller;
 
@@ -146,12 +148,12 @@ class _LoginInFormState extends State<LoginInForm> {
         SizedBox(
           height: 20.h,
         ),
-        DefaultButton(press: performLogin, text: "Log In"),
+        DefaultButton(press: () async => await performLogin(), text: "Log In"),
       ],
     );
   }
 
-  void performLogin() {
+  Future<void> performLogin() async {
     if (chechData()) {
       return login();
     }
@@ -162,15 +164,25 @@ class _LoginInFormState extends State<LoginInForm> {
         _passwordTextcontroller.text.isNotEmpty) {
       return true;
     } else {
+      showSnackBar(
+        context: context,
+        message: 'Enter required data!',
+        error: true,
+      );
       return false;
     }
   }
 
-  void login() async {
-    await SharedPrefController()
-        .savePhoneNumber(phone: _phoneNumberTextController.text);
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, AppRouter.home);
-    });
+  Future<void> login() async {
+    final Map<String, String> loginDetails = {};
+    loginDetails['mobile'] = _phoneNumberTextController.text;
+    loginDetails['password'] = _passwordTextcontroller.text;
+    Map authBaseResponse =
+        await UserWebService().login(context, loginDetails: loginDetails);
+    if (authBaseResponse['status']) {
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushReplacementNamed(context, AppRouter.home);
+      });
+    } else {}
   }
 }
