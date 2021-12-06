@@ -15,6 +15,7 @@ mixin Helpers {
           backgroundColor: error ? Colors.red : Colors.green,
           behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: durationInSeconds),
+          dismissDirection: DismissDirection.horizontal,
           action: hideAction
               ? SnackBarAction(
                   label: 'Hide',

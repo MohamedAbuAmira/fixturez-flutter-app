@@ -1,12 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
 import 'package:fixturez/core/constants/constants.dart';
 import 'package:fixturez/presentation/screens/home_screen/widgets/widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../data/models/models.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  static CategoryHome categoryHomeItem = CategoryHome();
+  static List<CategoryHome> categoryHome = [
+    categoryHomeItem,
+    categoryHomeItem,
+    categoryHomeItem,
+    categoryHomeItem
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +25,7 @@ class HomeScreen extends StatelessWidget {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 14.h),
             Padding(
@@ -37,10 +49,82 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             HomeSlider(),
+            SizedBox(height: 20.h),
+            SizedBox(
+              height: 184.h,
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                children: categoryHome,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: ViewAllHeader(
+                onPressed: () {
+                  print("view all");
+                },
+              ),
+            )
           ],
         ),
       ),
     ));
+  }
+}
+
+class ViewAllHeader extends StatelessWidget {
+  const ViewAllHeader({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text("the best products"),
+        TextButton(
+            onPressed: onPressed,
+            child: Text(
+              "View All",
+              style: AppTextStyles.PoppinsFootnote(
+                  textColor: const Color(0xFF007AFF)),
+            ))
+      ],
+    );
+  }
+}
+
+class CategoryHome extends StatelessWidget {
+  const CategoryHome({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 90.h,
+      width: 94.w,
+      decoration: BoxDecoration(
+          border: Border.all(color: AppColors.tertiaryGreyColor, width: 1)),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AppIcons.customIcon(iconName: 'icon_cat_sofas'),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text(
+            "Product",
+            style: AppTextStyles.PoppinsCaption(textColor: AppColors.darkColor),
+          )
+        ],
+      ),
+    );
   }
 }
 
