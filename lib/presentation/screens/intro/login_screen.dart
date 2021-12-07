@@ -1,9 +1,8 @@
-import 'package:fixturez/core/constants/constants.dart';
-import 'package:fixturez/core/helpers/helpers.dart';
-import 'package:fixturez/core/prefs/shared_pref_controller.dart';
-import 'package:fixturez/data/web_services/user_web_service.dart';
-import 'package:fixturez/presentation/router/app_router.dart';
-import 'package:fixturez/presentation/screens/widgets/widgets.dart';
+import '../../../core/constants/constants.dart';
+import '../../../core/helpers/helpers.dart';
+import '../../../data/web_services/web_services.dart';
+import '../../../presentation/router/app_router.dart';
+import '../../../presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -137,12 +136,6 @@ class _LoginInFormState extends State<LoginInForm> with Helpers {
           cursorColor: AppColors.primaryColor,
           suffixIcon: AppIcons.customIcon(
               iconName: 'ic_eye_slash', iconColor: AppColors.primaryColor),
-          textButtonAsSuffixIcon: TextButton(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              onPressed: () {
-                Navigator.pushNamed(context, AppRouter.forgotPassword);
-              },
-              child: const Text('Forgot?')),
           obscureText: true,
         ),
         SizedBox(

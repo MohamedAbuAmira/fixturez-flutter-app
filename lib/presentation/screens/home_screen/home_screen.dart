@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,12 +10,22 @@ import '../../../data/models/models.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  static CategoryHome categoryHomeItem = CategoryHome();
+  static CategoryHome categoryHomeItem = const CategoryHome(
+    imageName: 'icon_cat_sofas',
+    productName: 'My product',
+  );
   static List<CategoryHome> categoryHome = [
     categoryHomeItem,
     categoryHomeItem,
     categoryHomeItem,
-    categoryHomeItem
+    categoryHomeItem,
+    categoryHomeItem,
+    categoryHomeItem,
+    categoryHomeItem,
+    const CategoryHome(
+      imageName: 'icon_cat_menu',
+      productName: 'More',
+    )
   ];
 
   @override
@@ -25,7 +34,7 @@ class HomeScreen extends StatelessWidget {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 14.h),
             Padding(
@@ -33,11 +42,11 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 children: [
                   AppIcons.customIcon(iconName: "ic_Burger"),
-                  SizedBox(width: 15.h),
+                  SizedBox(width: 15.w),
                   AppIcons.customIcon(iconName: "logo"),
-                  SizedBox(width: 106.h),
+                  SizedBox(width: 106.w),
                   AppIcons.customIcon(iconName: "ic_Heart"),
-                  SizedBox(width: 26.h),
+                  SizedBox(width: 26.w),
                   AppIcons.customIcon(iconName: "ic_Notification")
                 ],
               ),
@@ -50,21 +59,33 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             HomeSlider(),
             SizedBox(height: 20.h),
-            SizedBox(
-              height: 184.h,
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-                children: categoryHome,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 1.w),
+              child: SizedBox(
+                height: 184.h,
+                child: GridView(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4),
+                  children: categoryHome,
+                ),
               ),
             ),
+            SizedBox(height: 16.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: ViewAllHeader(
+                text: 'Next Thing On Your Mind',
                 onPressed: () {
                   print("view all");
                 },
               ),
+            ),
+            SizedBox(height: 10.h),
+            CategoryThingMind(),
+            Container(
+              color: AppColors.tertiaryGreyColor,
+              height: 6.h,
+              width: double.infinity,
             )
           ],
         ),
@@ -73,19 +94,49 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class CategoryThingMind extends StatelessWidget {
+  const CategoryThingMind({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 162.w,
+      height: 162.h,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.r)),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+            color: Colors.red,
+          ),
+          Positioned(bottom: 8.h, child: const Text("Category"))
+        ],
+      ),
+    );
+  }
+}
+
 class ViewAllHeader extends StatelessWidget {
   const ViewAllHeader({
     Key? key,
     required this.onPressed,
+    required this.text,
   }) : super(key: key);
   final VoidCallback onPressed;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("the best products"),
+        Text(
+          text,
+          style: AppTextStyles.PoppinsBody2(textColor: AppColors.darkColor),
+        ),
         TextButton(
             onPressed: onPressed,
             child: Text(
@@ -101,7 +152,11 @@ class ViewAllHeader extends StatelessWidget {
 class CategoryHome extends StatelessWidget {
   const CategoryHome({
     Key? key,
+    required this.productName,
+    required this.imageName,
   }) : super(key: key);
+  final String productName;
+  final String imageName;
 
   @override
   Widget build(BuildContext context) {
@@ -114,12 +169,12 @@ class CategoryHome extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcons.customIcon(iconName: 'icon_cat_sofas'),
+          AppIcons.customIcon(iconName: imageName, width: 44.w, height: 44.h),
           SizedBox(
             height: 5.h,
           ),
           Text(
-            "Product",
+            productName,
             style: AppTextStyles.PoppinsCaption(textColor: AppColors.darkColor),
           )
         ],

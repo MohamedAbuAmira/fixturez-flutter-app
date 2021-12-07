@@ -321,8 +321,10 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
       final String activationCode = authBaseResponse['code'].toString();
 
       Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushNamed(context, AppRouter.activateAccount,
-            arguments: activationCode);
+        Navigator.pushNamed(context, AppRouter.activateAccount, arguments: {
+          'code': activationCode,
+          'phoneNumber': _phoneNumberTextcontroller.text
+        });
       });
     } else {}
   }

@@ -16,7 +16,7 @@ class User {
   late String refreshToken;
   late City city;
 
-  User();
+  // User();
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

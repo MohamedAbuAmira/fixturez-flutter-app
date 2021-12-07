@@ -10,7 +10,6 @@ class InputTextField extends StatelessWidget {
     this.suffixIcon,
     this.textInputType = TextInputType.text,
     this.obscureText = false,
-    this.textButtonAsSuffixIcon,
     required this.controller,
     this.editingTextColor = AppColors.darkColor,
     this.cursorColor = AppColors.darkColor,
@@ -22,7 +21,6 @@ class InputTextField extends StatelessWidget {
   final TextInputType textInputType;
   final TextEditingController controller;
   final bool obscureText;
-  final Widget? textButtonAsSuffixIcon;
   final Color editingTextColor;
   final Color cursorColor;
 

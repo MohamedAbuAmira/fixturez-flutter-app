@@ -1,17 +1,13 @@
 import 'package:fixturez/core/exceptions/route_exception.dart';
-import 'package:fixturez/presentation/screens/home_page.dart';
-import 'package:fixturez/presentation/screens/intro/login_screen.dart';
-import 'package:fixturez/presentation/screens/intro/luanch_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/intro/activate_account.dart';
-import '../screens/intro/forgot_password_screen.dart';
-import '../screens/intro/signup_screen.dart';
+import '../screens/screens.dart';
 
 class AppRouter {
   static const String launch = 'launch_screen';
   static const String login = '/login_screen';
   static const String forgotPassword = '/forgot_password_screen';
+  static const String resetPassword = '/reset_password';
   static const String signup = '/signup_screen';
   static const String activateAccount = '/activate_account';
   static const String home = '/';
@@ -32,15 +28,25 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const ForgotPasswordScreen(),
         );
+      case resetPassword:
+        final argResetPasswordDetails =
+            settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
+          builder: (_) => ResetPasswordScreen(
+            resetPasswordDetails: argResetPasswordDetails,
+          ),
+        );
       case signup:
         return MaterialPageRoute(
           builder: (_) => const SignUpScreen(),
         );
       case activateAccount:
-        final argsActivateAccountCode = settings.arguments as String;
+        final argsActivateAccountDetails =
+            settings.arguments as Map<String, String>;
+
         return MaterialPageRoute(
           builder: (_) => ActivateAccountScreen(
-            activateAccountCode: argsActivateAccountCode,
+            activateAccountDetails: argsActivateAccountDetails,
           ),
         );
       case home:

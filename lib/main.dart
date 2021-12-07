@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'core/constants/strings.dart';
+import 'package:fixturez/core/constants/constants.dart';
 import 'core/prefs/shared_pref_controller.dart';
 import 'core/themes/app_theme.dart';
 import 'presentation/router/app_router.dart';
