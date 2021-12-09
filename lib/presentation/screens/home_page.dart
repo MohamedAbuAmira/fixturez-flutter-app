@@ -10,11 +10,11 @@ class HomePage extends StatelessWidget {
   final ValueNotifier<int> screenIndex = ValueNotifier(0);
   final ValueNotifier<String> title = ValueNotifier('Home');
 
-  final screens = const [
+  final screens = [
     HomeScreen(),
-    CategoriesScreen(),
-    CardScreen(),
-    ProfileScreen()
+    const CategoriesScreen(),
+    const CardScreen(),
+    const ProfileScreen()
   ];
 
   final screenTitles = const ["Home", "Categories", "Card", "Profile"];

@@ -1,6 +1,8 @@
 import 'package:fixturez/core/exceptions/route_exception.dart';
+
 import 'package:flutter/material.dart';
 
+import '../../data/models/models.dart';
 import '../screens/screens.dart';
 
 class AppRouter {
@@ -11,6 +13,7 @@ class AppRouter {
   static const String signup = '/signup_screen';
   static const String activateAccount = '/activate_account';
   static const String home = '/';
+  static const String productsInCategoryPage = 'products_in_category';
 
   const AppRouter._();
 
@@ -52,6 +55,13 @@ class AppRouter {
       case home:
         return MaterialPageRoute(
           builder: (_) => HomePage(),
+        );
+      case productsInCategoryPage:
+        final argCategory = settings.arguments as Category;
+        return MaterialPageRoute(
+          builder: (_) => ProductsInCategory(
+            category: argCategory,
+          ),
         );
       default:
         throw const RouteException('Route not found!');

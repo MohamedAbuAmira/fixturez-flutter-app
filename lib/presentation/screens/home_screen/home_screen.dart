@@ -1,14 +1,12 @@
+import 'home_viewers/viewers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-
-import 'package:fixturez/core/constants/constants.dart';
-import 'package:fixturez/presentation/screens/home_screen/widgets/widgets.dart';
-
+import '../../../../core/constants/constants.dart';
+import '../widgets/widgets.dart';
 import '../../../data/models/models.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
   static CategoryHome categoryHomeItem = const CategoryHome(
     imageName: 'icon_cat_sofas',
@@ -28,13 +26,56 @@ class HomeScreen extends StatelessWidget {
     )
   ];
 
+  static String imageUrl =
+      "https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Product> producItems = [];
+  Product get getproduct {
+    final Product product = Product();
+    product.imageUrl = HomeScreen.imageUrl;
+
+    return product;
+  }
+
+  List<Category> categoriesItems = [];
+  Category get getCategories {
+    final Category category = Category();
+    category.imageUrl = HomeScreen.imageUrl;
+    category.nameEn = "My category";
+
+    return category;
+  }
+
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      producItems = [
+        getproduct,
+        getproduct,
+        getproduct,
+        getproduct,
+        getproduct
+      ];
+
+      categoriesItems = [
+        getCategories,
+        getCategories,
+        getCategories,
+        getCategories,
+        getCategories,
+        getCategories
+      ];
+    });
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 14.h),
             Padding(
@@ -57,203 +98,81 @@ class HomeScreen extends StatelessWidget {
               child: const SearchField(),
             ),
             SizedBox(height: 16.h),
-            HomeSlider(),
+            const HomeSlider(),
             SizedBox(height: 20.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 1.w),
-              child: SizedBox(
-                height: 184.h,
-                child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4),
-                  children: categoryHome,
-                ),
-              ),
+              child:
+                  CategoriesHomeSection(categoryHome: HomeScreen.categoryHome),
             ),
-            SizedBox(height: 16.h),
+            ViewAllHeader(
+              text: 'Next Thing On Your Mind',
+              onPressed: () {},
+            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: ViewAllHeader(
-                text: 'Next Thing On Your Mind',
-                onPressed: () {
-                  print("view all");
-                },
-              ),
+                padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                child: buildCategoryThingsMindGridView()),
+            const SectionDivider(),
+            ViewAllHeader(
+              text: 'Bank Offers',
+              onPressed: () {},
             ),
-            SizedBox(height: 10.h),
-            CategoryThingMind(),
-            Container(
-              color: AppColors.tertiaryGreyColor,
-              height: 6.h,
-              width: double.infinity,
-            )
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: SizedBox(height: 174.h, child: buildBankOffersGridView()),
+            ),
+            const SectionDivider(),
+            ViewAllHeader(
+              text: 'Work From Home',
+              onPressed: () {},
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child:
+                  SizedBox(height: 196.h, child: buildWorkFromHomeGridView()),
+            ),
+            const SectionDivider(),
+            ViewAllHeader(
+              text: 'Heavy Discount',
+              onPressed: () {},
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child:
+                  SizedBox(height: 230.h, child: buildHeavtDiscountGridView()),
+            ),
+            const SectionDivider(),
+            ViewAllHeader(
+              text: 'Make everyone go Wow',
+              onPressed: () {},
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.w),
+              child: SizedBox(height: 178.h, child: buildeveryoneWowGridView()),
+            ),
           ],
         ),
       ),
     ));
   }
-}
 
-class CategoryThingMind extends StatelessWidget {
-  const CategoryThingMind({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 162.w,
-      height: 162.h,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.r)),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Container(
-            color: Colors.red,
-          ),
-          Positioned(bottom: 8.h, child: const Text("Category"))
-        ],
-      ),
-    );
-  }
-}
-
-class ViewAllHeader extends StatelessWidget {
-  const ViewAllHeader({
-    Key? key,
-    required this.onPressed,
-    required this.text,
-  }) : super(key: key);
-  final VoidCallback onPressed;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: AppTextStyles.PoppinsBody2(textColor: AppColors.darkColor),
-        ),
-        TextButton(
-            onPressed: onPressed,
-            child: Text(
-              "View All",
-              style: AppTextStyles.PoppinsFootnote(
-                  textColor: const Color(0xFF007AFF)),
-            ))
-      ],
-    );
-  }
-}
-
-class CategoryHome extends StatelessWidget {
-  const CategoryHome({
-    Key? key,
-    required this.productName,
-    required this.imageName,
-  }) : super(key: key);
-  final String productName;
-  final String imageName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 90.h,
-      width: 94.w,
-      decoration: BoxDecoration(
-          border: Border.all(color: AppColors.tertiaryGreyColor, width: 1)),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AppIcons.customIcon(iconName: imageName, width: 44.w, height: 44.h),
-          SizedBox(
-            height: 5.h,
-          ),
-          Text(
-            productName,
-            style: AppTextStyles.PoppinsCaption(textColor: AppColors.darkColor),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class HomeSlider extends StatefulWidget {
-  const HomeSlider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<HomeSlider> createState() => _HomeSliderState();
-}
-
-class _HomeSliderState extends State<HomeSlider> {
-  late PageController pageViewcontroller;
-  List<SliderModel> slides = <SliderModel>[];
-  late int currentIndex;
-  @override
-  void initState() {
-    super.initState();
-    // initilize when the screen open
-
-    slides = getSlides();
-    currentIndex = 0;
-    pageViewcontroller = PageController();
+  Widget buildBankOffersGridView() {
+    return BankOffersViewer(products: producItems);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: 290.h,
-          width: double.infinity,
-          child: PageView.builder(
-            // controller: pageViewcontroller,
-            itemCount: slides.length,
-            onPageChanged: (value) {
-              setState(() {
-                currentIndex = value;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Image.asset(slides[index].getImagePath(),
-                  fit: BoxFit.fill);
-            },
-          ),
-        ),
-        SizedBox(
-          height: 12.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < slides.length; i++)
-              currentIndex == i
-                  ? _pageIndexIndicator(true)
-                  : _pageIndexIndicator(false),
-          ],
-        ),
-      ],
-    );
+  Widget buildeveryoneWowGridView() {
+    return EveryoneWowViewer(products: producItems);
   }
 
-  Widget _pageIndexIndicator(bool isCurrentPage) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 6.w),
-      height: isCurrentPage ? 9.h : 8.h,
-      width: isCurrentPage ? 9.w : 8.w,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color:
-            isCurrentPage ? AppColors.darkColor : AppColors.secondaryGreyColor,
-      ),
-    );
+  Widget buildWorkFromHomeGridView() {
+    return WorkFromHomeViewer(products: producItems);
+  }
+
+  Widget buildHeavtDiscountGridView() {
+    return HeavyDiscountViewer(products: producItems);
+  }
+
+  Widget buildCategoryThingsMindGridView() {
+    return CategoryThingKeepMindViewer(categories: categoriesItems);
   }
 }

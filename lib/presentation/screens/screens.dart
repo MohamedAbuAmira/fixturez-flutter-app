@@ -9,3 +9,4 @@ export 'intro/forgot_password_screen.dart';
 export 'intro/reset_password_screen.dart';
 export 'intro/activate_account_screen.dart';
 export 'home_page.dart';
+export 'categories_screen/products_in_category.dart';
