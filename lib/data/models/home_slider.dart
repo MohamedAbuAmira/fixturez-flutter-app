@@ -1,10 +1,10 @@
 class SliderModel {
-  late String imgPath;
+  late String imgUrl;
   // late String title;
   // late String description;
 
-  void setImagePath(String getImagePath) {
-    imgPath = getImagePath;
+  void setImageUrl(String getImageUrl) {
+    imgUrl = getImageUrl;
   }
 
   // void setgetTitle(String getTitle) {
@@ -15,8 +15,8 @@ class SliderModel {
   //   description = getDescription;
   // }
 
-  String getImagePath() {
-    return imgPath;
+  String getImageUrl() {
+    return imgUrl;
   }
 
   // String getTitle() {
@@ -33,25 +33,29 @@ List<SliderModel> getSlides() {
   SliderModel slideModel = SliderModel();
 
   // Slider 1
-  slideModel.setImagePath("assets/images/slider1.jpg");
+  slideModel.setImageUrl(
+      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
 
   slides.add(slideModel);
 
   // Slider 2
   slideModel = SliderModel();
-  slideModel.setImagePath("assets/images/slider2.jpg");
+  slideModel.setImageUrl(
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
 
   slides.add(slideModel);
 
   // Slider 3
   slideModel = SliderModel();
-  slideModel.setImagePath("assets/images/slider3.jpg");
+  slideModel.setImageUrl(
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
 
   slides.add(slideModel);
 
   // Slider 4
   slideModel = SliderModel();
-  slideModel.setImagePath("assets/images/slider4.jpg");
+  slideModel.setImageUrl(
+      "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80");
 
   slides.add(slideModel);
   return slides;

@@ -7,3 +7,5 @@ export 'search_field.dart';
 export 'sections_divider.dart';
 export 'view_all_header.dart';
 export 'picture_provider.dart';
+export 'product_images_slider.dart';
+export 'product_card.dart';

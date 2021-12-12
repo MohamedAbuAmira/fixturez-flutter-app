@@ -14,6 +14,7 @@ class AppRouter {
   static const String activateAccount = '/activate_account';
   static const String home = '/';
   static const String productsInCategoryPage = 'products_in_category';
+  static const String product = 'product_screen';
 
   const AppRouter._();
 
@@ -61,6 +62,13 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => ProductsInCategory(
             category: argCategory,
+          ),
+        );
+      case product:
+        final argProduct = settings.arguments as Product;
+        return MaterialPageRoute(
+          builder: (_) => ProductScreen(
+            product: argProduct,
           ),
         );
       default:

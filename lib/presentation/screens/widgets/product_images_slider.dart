@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../data/models/models.dart';
-import '../../widgets/widgets.dart';
+import 'widgets.dart';
 
-class HomeSlider extends StatefulWidget {
-  const HomeSlider({
+class ProductImagesSlder extends StatefulWidget {
+  const ProductImagesSlder({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<HomeSlider> createState() => _HomeSliderState();
+  State<ProductImagesSlder> createState() => _ProductImagesSlderState();
 }
 
-class _HomeSliderState extends State<HomeSlider> {
+class _ProductImagesSlderState extends State<ProductImagesSlder> {
   late PageController pageViewcontroller;
   List<SliderModel> slides = <SliderModel>[];
   late int currentIndex;
@@ -29,11 +29,11 @@ class _HomeSliderState extends State<HomeSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
       children: [
-        Container(
-          height: 290.h,
+        SizedBox(
+          height: 375.h,
           width: double.infinity,
           child: PageView.builder(
             // controller: pageViewcontroller,
@@ -44,21 +44,24 @@ class _HomeSliderState extends State<HomeSlider> {
               });
             },
             itemBuilder: (context, index) {
-              return PictureProvider(image: slides[index].getImageUrl());
+              return PictureProvider(
+                image: slides[index].getImageUrl(),
+                borderRadius: 0,
+              );
             },
           ),
         ),
-        SizedBox(
-          height: 12.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < slides.length; i++)
-              currentIndex == i
-                  ? _pageIndexIndicator(true)
-                  : _pageIndexIndicator(false),
-          ],
+        Padding(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int i = 0; i < slides.length; i++)
+                currentIndex == i
+                    ? _pageIndexIndicator(true)
+                    : _pageIndexIndicator(false),
+            ],
+          ),
         ),
       ],
     );

@@ -72,88 +72,99 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
     });
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 14.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Row(
-                children: [
-                  AppIcons.customIcon(iconName: "ic_Burger"),
-                  SizedBox(width: 15.w),
-                  AppIcons.customIcon(iconName: "logo"),
-                  SizedBox(width: 106.w),
-                  AppIcons.customIcon(iconName: "ic_Heart"),
-                  SizedBox(width: 26.w),
-                  AppIcons.customIcon(iconName: "ic_Notification")
-                ],
-              ),
-            ),
-            SizedBox(height: 26.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: const SearchField(),
-            ),
-            SizedBox(height: 16.h),
-            const HomeSlider(),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 1.w),
-              child:
-                  CategoriesHomeSection(categoryHome: HomeScreen.categoryHome),
-            ),
-            ViewAllHeader(
-              text: 'Next Thing On Your Mind',
-              onPressed: () {},
-            ),
-            Padding(
-                padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                child: buildCategoryThingsMindGridView()),
-            const SectionDivider(),
-            ViewAllHeader(
-              text: 'Bank Offers',
-              onPressed: () {},
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: SizedBox(height: 174.h, child: buildBankOffersGridView()),
-            ),
-            const SectionDivider(),
-            ViewAllHeader(
-              text: 'Work From Home',
-              onPressed: () {},
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child:
-                  SizedBox(height: 196.h, child: buildWorkFromHomeGridView()),
-            ),
-            const SectionDivider(),
-            ViewAllHeader(
-              text: 'Heavy Discount',
-              onPressed: () {},
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child:
-                  SizedBox(height: 230.h, child: buildHeavtDiscountGridView()),
-            ),
-            const SectionDivider(),
-            ViewAllHeader(
-              text: 'Make everyone go Wow',
-              onPressed: () {},
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w),
-              child: SizedBox(height: 178.h, child: buildeveryoneWowGridView()),
+        appBar: AppBar(
+          // bottom: PreferredSizeWidget(),
+          title: AppIcons.customIcon(iconName: "logo"),
+          leading: Padding(
+            padding: EdgeInsets.only(left: 20.w),
+            child: AppIcons.customIcon(
+                iconName: "ic_Burger", width: 24.w, height: 24.h),
+          ),
+          actions: [
+            AppIcons.customIcon(iconName: "ic_Heart"),
+            SizedBox(width: 26.w),
+            AppIcons.customIcon(iconName: "ic_Notification"),
+            SizedBox(
+              width: 20.w,
             ),
           ],
         ),
-      ),
-    ));
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: const SearchField(),
+                ),
+                SizedBox(height: 16.h),
+                const HomeSlider(),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 1.w),
+                  child: CategoriesHomeSection(
+                      categoryHome: HomeScreen.categoryHome),
+                ),
+                ViewAllHeader(
+                  text: 'Next Thing On Your Mind',
+                  onPressed: () {},
+                ),
+                Padding(
+                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                    child: buildCategoryThingsMindGridView()),
+                const SectionDivider(
+                  addMargin: true,
+                ),
+                ViewAllHeader(
+                  text: 'Bank Offers',
+                  onPressed: () {},
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child:
+                      SizedBox(height: 174.h, child: buildBankOffersGridView()),
+                ),
+                const SectionDivider(
+                  addMargin: true,
+                ),
+                ViewAllHeader(
+                  text: 'Work From Home',
+                  onPressed: () {},
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: SizedBox(
+                      height: 196.h, child: buildWorkFromHomeGridView()),
+                ),
+                const SectionDivider(
+                  addMargin: true,
+                ),
+                ViewAllHeader(
+                  text: 'Heavy Discount',
+                  onPressed: () {},
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: SizedBox(
+                      height: 230.h, child: buildHeavtDiscountGridView()),
+                ),
+                const SectionDivider(
+                  addMargin: true,
+                ),
+                ViewAllHeader(
+                  text: 'Make everyone go Wow',
+                  onPressed: () {},
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: SizedBox(
+                      height: 178.h, child: buildeveryoneWowGridView()),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget buildBankOffersGridView() {

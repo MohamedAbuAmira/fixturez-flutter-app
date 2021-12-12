@@ -13,18 +13,21 @@ class PictureProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius.r),
+    return Container(
       clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F1F1),
+        borderRadius: BorderRadius.circular(borderRadius.r),
+      ),
       child: image.isNotEmpty
           ? FadeInImage.assetNetwork(
               height: double.infinity,
               width: double.infinity,
               fit: BoxFit.fill,
-              placeholder: 'assets/images/loading-dots.gif',
+              placeholder: 'assets/images/loading.gif',
               image: image,
             )
-          : Image.asset('assets/images/placeholder-avatar.gif',
+          : Image.asset('assets/images/background_placeholder.jpg',
               height: double.infinity,
               width: double.infinity,
               fit: BoxFit.cover),

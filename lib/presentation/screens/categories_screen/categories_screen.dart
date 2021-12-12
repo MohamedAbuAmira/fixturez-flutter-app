@@ -1,8 +1,9 @@
-import 'package:fixturez/presentation/router/app_router.dart';
+import '../../../presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/models/models.dart';
+import '../widgets/widgets.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -44,22 +45,35 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ];
     });
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            AppIcons.customIcon(iconName: "ic_Search"),
-            AppIcons.customIcon(iconName: "ic_Notification")
-          ],
-          title: Text("ِAll Categories",
-              style: AppTextStyles.PoppinsH3(textColor: AppColors.darkColor)),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: CategoriesGridView(
-              categories: categoriesItems,
-            ),
+      appBar: AppBar(
+        actions: [
+          AppIcons.customIcon(iconName: "ic_Search"),
+          SizedBox(width: 26.w),
+          AppIcons.customIcon(iconName: "ic_Notification"),
+          SizedBox(
+            width: 20.w,
           ),
-        ));
+        ],
+        title: Text("ِAll Categories",
+            style: AppTextStyles.PoppinsH3(textColor: AppColors.darkColor)),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SectionDivider(),
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: CategoriesGridView(
+                categories: categoriesItems,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -99,33 +113,29 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20.r),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, AppRouter.productsInCategoryPage,
-                  arguments: category);
-            },
-            child: Container(
-              height: 104.h,
-              width: 104.w,
-              decoration: BoxDecoration(
-                  border:
-                      Border.all(color: AppColors.tertiaryGreyColor, width: 1),
-                  borderRadius: BorderRadius.circular(20.r)),
-              alignment: Alignment.center,
-              child: category.imageUrl.isNotEmpty
-                  ? FadeInImage.assetNetwork(
-                      width: 61.w,
-                      height: 61.h,
-                      fit: BoxFit.fill,
-                      placeholder: 'assets/images/loading-dots.gif',
-                      image: category.imageUrl,
-                    )
-                  : Image.asset('assets/images/placeholder-avatar.gif',
-                      width: 61.w, height: 61.h, fit: BoxFit.cover),
-            ),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRouter.productsInCategoryPage,
+                arguments: category);
+          },
+          child: Container(
+            height: 104.h,
+            width: 104.w,
+            decoration: BoxDecoration(
+                border:
+                    Border.all(color: AppColors.tertiaryGreyColor, width: 1),
+                borderRadius: BorderRadius.circular(20.r)),
+            alignment: Alignment.center,
+            child: category.imageUrl.isNotEmpty
+                ? FadeInImage.assetNetwork(
+                    width: 61.w,
+                    height: 61.h,
+                    fit: BoxFit.fill,
+                    placeholder: 'assets/images/loading-dots.gif',
+                    image: category.imageUrl,
+                  )
+                : Image.asset('assets/images/placeholder-avatar.gif',
+                    width: 61.w, height: 61.h, fit: BoxFit.cover),
           ),
         ),
         SizedBox(
