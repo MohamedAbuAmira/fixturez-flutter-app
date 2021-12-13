@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../business_logic/cubit.dart';
 import '../../../presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +18,8 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  late List<Category> allCategories;
+
   List<Category> categoriesItems = [];
   Category get getCategories {
     final Category category = Category();
@@ -22,6 +27,31 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     category.nameEn = "My category";
 
     return category;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<CategoriesCubit>(context).getAllCategories();
+  }
+
+  Widget buildBlocWidget() {
+    return BlocBuilder<CategoriesCubit, CategoriesState>(
+      builder: (context, state) {
+        if (state is CharactersLoaded) {
+          allCategories = (state).categories;
+          return buildLoadedGridViewWidget();
+        } else {
+          return showloadingLoaded();
+        }
+      },
+    );
+  }
+
+  Widget showloadingLoaded() {
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.secondaryColor),
+    );
   }
 
   @override
@@ -60,18 +90,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SectionDivider(),
+            const SectionDivider(),
             SizedBox(
               height: 20.h,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: CategoriesGridView(
-                categories: categoriesItems,
-              ),
+            buildBlocWidget(),
+            SizedBox(
+              height: 85.h,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildLoadedGridViewWidget() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: CategoriesGridView(
+        categories: allCategories,
+        // categories: categoriesItems,
       ),
     );
   }
@@ -131,10 +169,10 @@ class CategoryCard extends StatelessWidget {
                     width: 61.w,
                     height: 61.h,
                     fit: BoxFit.fill,
-                    placeholder: 'assets/images/loading-dots.gif',
+                    placeholder: 'assets/images/loading.gif',
                     image: category.imageUrl,
                   )
-                : Image.asset('assets/images/placeholder-avatar.gif',
+                : Image.asset('assets/images/background_placeholder.jpg',
                     width: 61.w, height: 61.h, fit: BoxFit.cover),
           ),
         ),

@@ -1,21 +1,32 @@
-import 'package:fixturez/core/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'screens.dart';
-import 'widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+import 'package:fixturez/core/constants/constants.dart';
 
+import '../../business_logic/cubit.dart';
+import '../../data/repository/repository.dart';
+import '../../data/web_services/web_services.dart';
+import 'screens.dart';
+import 'widgets/widgets.dart';
+
+class HomePage extends StatefulWidget {
+  late CategoryRepository categoryRepository;
+  late CategoriesCubit categoriesCubit;
+
+  HomePage() {
+    categoryRepository = CategoryRepository(CategoriesWebService());
+    categoriesCubit = CategoriesCubit(categoryRepository);
+  }
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final ValueNotifier<int> screenIndex = ValueNotifier(0);
-  final ValueNotifier<String> title = ValueNotifier('Home');
 
-  final screens = [
-    HomeScreen(),
-    const CategoriesScreen(),
-    const CardScreen(),
-    const ProfileScreen()
-  ];
+  final ValueNotifier<String> title = ValueNotifier('Home');
 
   final screenTitles = const ["Home", "Categories", "Card", "Profile"];
 
@@ -25,41 +36,24 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  final screens = [
+    HomeScreen(),
+    BlocProvider(
+      create: (BuildContext contex) => HomePage().categoriesCubit,
+      child: const CategoriesScreen(),
+    ),
+    const CardScreen(),
+    const ProfileScreen()
+  ];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      // appBar: AppBar(
-      //   iconTheme: Theme.of(context).iconTheme,
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   leadingWidth: 54,
-      //   title: ValueListenableBuilder(
-      //       valueListenable: title,
-      //       builder: (BuildContext context, String value, _) {
-      //         return Text(
-      //           value,
-      //           style: const TextStyle(
-      //             fontSize: 16,
-      //             fontWeight: FontWeight.bold,
-      //           ),
-      //         );
-      //       }),
-      // actions: const [
-      //   Padding(
-      //     padding: EdgeInsets.only(right: 24.0),
-      //     child: Icon(Icons.person),
-      //   )
-      // ],
-      // leading: Align(
-      //   alignment: Alignment.centerRight,
-      //   child: IconBackground(
-      //       icon: Icons.search,
-      //       onTap: () {
-      //         print("TODO, Search icon");
-      //       }),
-      // ),
-      // ),
       body: ValueListenableBuilder(
           valueListenable: screenIndex,
           builder: (BuildContext context, int value, _) {

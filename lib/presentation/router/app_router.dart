@@ -1,7 +1,5 @@
 import 'package:fixturez/core/exceptions/route_exception.dart';
-
 import 'package:flutter/material.dart';
-
 import '../../data/models/models.dart';
 import '../screens/screens.dart';
 
@@ -15,8 +13,9 @@ class AppRouter {
   static const String home = '/';
   static const String productsInCategoryPage = 'products_in_category';
   static const String product = 'product_screen';
+  ///////////////////////////////////////////////////////////////
 
-  const AppRouter._();
+  // AppRouter() {}
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -47,7 +46,6 @@ class AppRouter {
       case activateAccount:
         final argsActivateAccountDetails =
             settings.arguments as Map<String, String>;
-
         return MaterialPageRoute(
           builder: (_) => ActivateAccountScreen(
             activateAccountDetails: argsActivateAccountDetails,
