@@ -1,3 +1,5 @@
+import 'package:fixturez/core/constants/constants.dart';
+import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
@@ -45,11 +47,47 @@ class _ProductItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 270.w,
-      height: 178.h,
-      margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
-      child: PictureProvider(image: product.imageUrl),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRouter.product,
+                arguments: product.id);
+          },
+          child: Container(
+            width: 240.w,
+            height: 200.h,
+            margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
+            child: PictureProvider(image: product.imageUrl),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(4.w, 8.h, 0, 4.h),
+          child: Text(
+            product.nameEn,
+            style:
+                AppTextStyles.PoppinsSubtitle(textColor: AppColors.darkColor),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, top: 4.h),
+          child: RichText(
+            text: TextSpan(
+              style: AppTextStyles.PoppinsCaption(
+                  textColor: AppColors.secondaryGreyColor),
+              children: <TextSpan>[
+                const TextSpan(text: 'Start at '),
+                TextSpan(
+                  text: '\$${product.price}',
+                  style: AppTextStyles.PoppinsCaption(
+                      textColor: const Color(0xFF34A853)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

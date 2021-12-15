@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../business_logic/cubit.dart';
 import 'home_viewers/viewers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +37,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Home home;
   List<Product> producItems = [];
   Product get getproduct {
     final Product product = Product();
@@ -52,7 +56,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<HomeCubit>(context).getHome();
+  }
+
+  dynamic _buildBlocWidget() {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoaded) {
+          home = (state).home;
+          return _buildLoadedHomePage();
+        } else {
+          return showloadingLoaded();
+        }
+      },
+    );
+  }
+
+  Widget showloadingLoaded() {
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.secondaryColor),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // buildBlocWidget();
     setState(() {
       producItems = [
         getproduct,
@@ -73,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     return Scaffold(
         appBar: AppBar(
-          // bottom: PreferredSizeWidget(),
           title: AppIcons.customIcon(iconName: "logo"),
           leading: Padding(
             padding: EdgeInsets.only(left: 20.w),
@@ -96,75 +125,86 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: const SearchField(),
+                  child: SearchField(
+                    onChange: (press) {},
+                    searchTextController: TextEditingController(),
+                  ),
                 ),
                 SizedBox(height: 16.h),
-                const HomeSlider(),
-                SizedBox(height: 20.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1.w),
-                  child: CategoriesHomeSection(
-                      categoryHome: HomeScreen.categoryHome),
-                ),
-                ViewAllHeader(
-                  text: 'Next Thing On Your Mind',
-                  onPressed: () {},
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                    child: buildCategoryThingsMindGridView()),
-                const SectionDivider(
-                  addMargin: true,
-                ),
-                ViewAllHeader(
-                  text: 'Bank Offers',
-                  onPressed: () {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child:
-                      SizedBox(height: 174.h, child: buildBankOffersGridView()),
-                ),
-                const SectionDivider(
-                  addMargin: true,
-                ),
-                ViewAllHeader(
-                  text: 'Work From Home',
-                  onPressed: () {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child: SizedBox(
-                      height: 196.h, child: buildWorkFromHomeGridView()),
-                ),
-                const SectionDivider(
-                  addMargin: true,
-                ),
-                ViewAllHeader(
-                  text: 'Heavy Discount',
-                  onPressed: () {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child: SizedBox(
-                      height: 230.h, child: buildHeavtDiscountGridView()),
-                ),
-                const SectionDivider(
-                  addMargin: true,
-                ),
-                ViewAllHeader(
-                  text: 'Make everyone go Wow',
-                  onPressed: () {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child: SizedBox(
-                      height: 178.h, child: buildeveryoneWowGridView()),
-                ),
+                _buildBlocWidget()
               ],
             ),
           ),
         ));
+  }
+
+  Widget _buildLoadedHomePage() {
+    return Column(
+      children: [
+        ProductImagesSlder(
+          images: home.slider,
+        ),
+        SizedBox(height: 20.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 1.w),
+          child: CategoriesHomeSection(categoryHome: HomeScreen.categoryHome),
+        ),
+        ViewAllHeader(
+          text: 'Next Thing On Your Mind',
+          onPressed: () {},
+        ),
+        Padding(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w),
+            child: buildCategoryThingsMindGridView()),
+        const SectionDivider(
+          addMargin: true,
+        ),
+        ViewAllHeader(
+          text: 'Make everyone go Wow',
+          onPressed: () {},
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: SizedBox(height: 270.h, child: buildeveryoneWowGridView()),
+        ),
+        const SectionDivider(
+          addMargin: true,
+        ),
+        ViewAllHeader(
+          text: 'Browser By Category',
+          onPressed: () {},
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: SizedBox(height: 230.h, child: buildHeavtDiscountGridView()),
+        ),
+        const SectionDivider(
+          addMargin: true,
+        ),
+        ViewAllHeader(
+          text: 'Bank Offers',
+          onPressed: () {},
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: SizedBox(height: 174.h, child: buildBankOffersGridView()),
+        ),
+        const SectionDivider(
+          addMargin: true,
+        ),
+        ViewAllHeader(
+          text: 'Work From Home',
+          onPressed: () {},
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w),
+          child: SizedBox(height: 196.h, child: buildWorkFromHomeGridView()),
+        ),
+        const SectionDivider(
+          addMargin: true,
+        ),
+      ],
+    );
   }
 
   Widget buildBankOffersGridView() {
@@ -172,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildeveryoneWowGridView() {
-    return EveryoneWowViewer(products: producItems);
+    return EveryoneWowViewer(products: home.latestProducts);
   }
 
   Widget buildWorkFromHomeGridView() {
@@ -180,10 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildHeavtDiscountGridView() {
-    return HeavyDiscountViewer(products: producItems);
+    return HeavyDiscountViewer(categories: home.homeCategory);
   }
 
   Widget buildCategoryThingsMindGridView() {
-    return CategoryThingKeepMindViewer(categories: categoriesItems);
+    return CategoryThingKeepMindViewer(categories: home.homeCategory);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:fixturez/presentation/router/app_router.dart';
+
 import '../../../../core/constants/constants.dart';
 import '../../../../data/models/models.dart';
 import '../../widgets/widgets.dart';
@@ -42,22 +44,28 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 162.w,
-      height: 162.h,
-      margin: EdgeInsetsDirectional.fromSTEB(5.w, 5.h, 5.w, 5.h),
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          PictureProvider(image: category.imageUrl, borderRadius: 16),
-          Positioned(
-              bottom: 8.h,
-              child: Text(
-                category.nameEn,
-                style: AppTextStyles.PoppinsSubtitle(
-                    textColor: AppColors.whiteColor),
-              ))
-        ],
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, AppRouter.subCategories,
+            arguments: category);
+      },
+      child: Container(
+        width: 162.w,
+        height: 162.h,
+        margin: EdgeInsetsDirectional.fromSTEB(5.w, 5.h, 5.w, 5.h),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            PictureProvider(image: category.imageUrl, borderRadius: 16),
+            Positioned(
+                bottom: 8.h,
+                child: Text(
+                  category.nameEn,
+                  style: AppTextStyles.PoppinsSubtitle(
+                      textColor: AppColors.whiteColor),
+                ))
+          ],
+        ),
       ),
     );
   }

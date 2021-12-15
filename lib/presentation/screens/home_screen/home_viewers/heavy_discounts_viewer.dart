@@ -1,3 +1,5 @@
+import 'package:fixturez/presentation/router/app_router.dart';
+
 import '../../../../core/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,10 @@ import '../../widgets/widgets.dart';
 class HeavyDiscountViewer extends StatelessWidget {
   const HeavyDiscountViewer({
     Key? key,
-    required this.products,
+    required this.categories,
   }) : super(key: key);
 
-  final List<Product> products;
+  final List<Category> categories;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +27,11 @@ class HeavyDiscountViewer extends StatelessWidget {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
-      itemCount: products.length,
+      itemCount: categories.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (ctx, index) {
         return _ProductItem(
-          product: products[index],
+          category: categories[index],
         );
       },
     );
@@ -39,19 +41,36 @@ class HeavyDiscountViewer extends StatelessWidget {
 class _ProductItem extends StatelessWidget {
   const _ProductItem({
     Key? key,
-    required this.product,
+    required this.category,
   }) : super(key: key);
 
-  final Product product;
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 205.w,
-      height: 230.h,
-      margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
-      child: InkWell(
-          onTap: () {}, child: PictureProvider(image: product.imageUrl)),
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, AppRouter.subCategories,
+            arguments: category);
+      },
+      child: Container(
+        child: Stack(
+            clipBehavior: Clip.antiAlias,
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: 205.w,
+                height: 230.h,
+                margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
+                child: InkWell(
+                    onTap: () {},
+                    child: PictureProvider(image: category.imageUrl)),
+              ),
+              Text(category.nameEn,
+                  style:
+                      AppTextStyles.PoppinsH2(textColor: AppColors.whiteColor)),
+            ]),
+      ),
     );
   }
 }

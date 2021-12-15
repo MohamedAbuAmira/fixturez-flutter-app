@@ -10,8 +10,6 @@ import '../widgets/widgets.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
-  static String imageUrl =
-      "https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -19,15 +17,6 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   late List<Category> allCategories;
-
-  List<Category> categoriesItems = [];
-  Category get getCategories {
-    final Category category = Category();
-    category.imageUrl = CategoriesScreen.imageUrl;
-    category.nameEn = "My category";
-
-    return category;
-  }
 
   @override
   void initState() {
@@ -38,7 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget buildBlocWidget() {
     return BlocBuilder<CategoriesCubit, CategoriesState>(
       builder: (context, state) {
-        if (state is CharactersLoaded) {
+        if (state is CategoriesLoaded) {
           allCategories = (state).categories;
           return buildLoadedGridViewWidget();
         } else {
@@ -56,24 +45,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      categoriesItems = [
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-      ];
-    });
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -94,7 +65,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             SizedBox(
               height: 20.h,
             ),
-            buildBlocWidget(),
+            Center(child: buildBlocWidget()),
             SizedBox(
               height: 85.h,
             ),
@@ -109,7 +80,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: CategoriesGridView(
         categories: allCategories,
-        // categories: categoriesItems,
       ),
     );
   }
@@ -124,10 +94,10 @@ class CategoriesGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 2,
           childAspectRatio: 1,
           crossAxisSpacing: 12.h,
-          mainAxisSpacing: 20.w),
+          mainAxisSpacing: 8.w),
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
@@ -153,27 +123,18 @@ class CategoryCard extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, AppRouter.productsInCategoryPage,
+            Navigator.pushNamed(context, AppRouter.subCategories,
                 arguments: category);
           },
           child: Container(
-            height: 104.h,
-            width: 104.w,
+            height: 190.h,
+            width: 162.w,
             decoration: BoxDecoration(
                 border:
                     Border.all(color: AppColors.tertiaryGreyColor, width: 1),
                 borderRadius: BorderRadius.circular(20.r)),
             alignment: Alignment.center,
-            child: category.imageUrl.isNotEmpty
-                ? FadeInImage.assetNetwork(
-                    width: 61.w,
-                    height: 61.h,
-                    fit: BoxFit.fill,
-                    placeholder: 'assets/images/loading.gif',
-                    image: category.imageUrl,
-                  )
-                : Image.asset('assets/images/background_placeholder.jpg',
-                    width: 61.w, height: 61.h, fit: BoxFit.cover),
+            child: PictureProvider(image: category.imageUrl),
           ),
         ),
         SizedBox(
@@ -181,8 +142,36 @@ class CategoryCard extends StatelessWidget {
         ),
         Text(
           category.nameEn,
-          style: AppTextStyles.PoppinsCaption(textColor: AppColors.darkColor),
-        )
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          style: AppTextStyles.PoppinsH4(
+              textColor: AppColors.darkColor, isSemiBold: true),
+        ),
+        SizedBox(
+          height: 4.h,
+        ),
+        RichText(
+          text: TextSpan(
+            style: AppTextStyles.PoppinsFootnote(
+                textColor: AppColors.secondaryColor),
+            children: <TextSpan>[
+              TextSpan(
+                text: '${category.productsCount}+ Products',
+                style: AppTextStyles.PoppinsFootnote(
+                    textColor: AppColors.primaryColor),
+              ),
+              TextSpan(
+                text: " - ${category.subCategoriesCount} Includes Categories",
+                style: AppTextStyles.PoppinsCaption(
+                    textColor: AppColors.primaryGreyColor),
+              )
+            ],
+          ),
+        ),
+        // Text('${category.productsCount}+ Products',
+        //     style: AppTextStyles.PoppinsFootnote(
+        //         textColor: AppColors.primaryGreyColor)),
       ],
     );
   }

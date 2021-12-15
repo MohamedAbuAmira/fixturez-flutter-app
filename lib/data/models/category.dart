@@ -1,10 +1,10 @@
 class Category {
-  late int id;
+  late int id; // Mian Category ID
   late String nameEn;
   late String nameAr;
   late String image;
-  late int productsCount;
-  late int subCategoriesCount;
+  late int? productsCount;
+  late int? subCategoriesCount;
   late String imageUrl;
 
 // ToDo

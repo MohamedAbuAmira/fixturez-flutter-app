@@ -8,7 +8,7 @@ class CategoryRepository {
 
   Future<List<Category>> getAllCategories() async {
     final categories = await categoriesWebService.getCategories();
-    print(categories.toList());
+    // print(categories.toList());
     return categories.map((category) => Category.fromJson(category)).toList();
   }
 }

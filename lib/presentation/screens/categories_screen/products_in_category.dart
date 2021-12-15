@@ -1,3 +1,6 @@
+import 'package:fixturez/business_logic/cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,68 +9,128 @@ import '../../../data/models/models.dart';
 import '../../router/app_router.dart';
 
 class ProductsInCategory extends StatefulWidget {
-  const ProductsInCategory({Key? key, required this.category})
+  const ProductsInCategory({Key? key, required this.subCategory})
       : super(key: key);
-  final Category category;
-  static String imageUrl =
-      "https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
+  final SubCategory subCategory;
 
   @override
   _ProductsInCategoryState createState() => _ProductsInCategoryState();
 }
 
 class _ProductsInCategoryState extends State<ProductsInCategory> {
-  List<Product> producItems = [];
-  Product get getproduct {
-    final Product product = Product();
-    product.imageUrl = ProductsInCategory.imageUrl;
-    product.nameEn = "Modern Swivel Accent Chair";
-    product.price = 47;
-    product.offerPrice = 33;
-    product.infoEn =
-        'Embodying the raw, wayward spirit of rock  roll, the Kilburn portable active stereo speaker takes the unmistakable look and sound of Marshall, unplugs the chords, and takes the show on the road. Weighing in under 7 pounds, the Kilburn is a lightweight piece of vintage styled engineering. Setting the bar as one of the loudest speakers in its class, the Kilburn is a compact, stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs for a sound that is both articulate and pronounced. The analogue knobs allow you to fine tune the controls to your personal preferences while the guitar-influenced leather strap enables easy and stylish travel';
+  late List<Product> subCategoryProducts;
+  late List<Product> searchedForProducts;
+  bool _isSearching = false;
+  final _searchTextController = TextEditingController();
 
-    return product;
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<SubCategoryProductsCubit>(context)
+        .getAllSubCategoryProducts();
+  }
+
+  Widget _buildBlocWidget() {
+    return BlocBuilder<SubCategoryProductsCubit, SubCategoryProductsState>(
+      builder: (context, state) {
+        if (state is SubCategoryProductsLoaded) {
+          subCategoryProducts = (state).subCategoryProducts;
+          return _buildLoadedGridViewWidget();
+        } else {
+          return _showloadingLoaded();
+        }
+      },
+    );
+  }
+
+  Widget _showloadingLoaded() {
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.secondaryColor),
+    );
+  }
+
+  Widget _buildTextField() {
+    return SearchField(
+        onChange: (searchedCharacters) {
+          addSearchedItemsToSearchedList(searchedCharacters);
+        },
+        searchTextController: _searchTextController);
+  }
+
+  void addSearchedItemsToSearchedList(String searchedCharacters) {
+    searchedForProducts = subCategoryProducts
+        .where((product) =>
+            product.nameEn.toLowerCase().contains(searchedCharacters))
+        .toList();
+    setState(() {});
+  }
+
+  List<Widget> _buildAppBarActions() {
+    if (_isSearching) {
+      return [
+        IconButton(
+          onPressed: () {
+            _clearSearching();
+            Navigator.pop(context);
+          },
+          icon: AppIcons.customIcon(iconName: "ic_close"),
+        ),
+      ];
+    } else {
+      return [
+        InkWell(
+          onTap: _startSearch,
+          child: AppIcons.customIcon(iconName: "ic_Search"),
+        ),
+        SizedBox(width: 26.w),
+        AppIcons.customIcon(iconName: "ic_Notification"),
+        SizedBox(
+          width: 20.w,
+        ),
+      ];
+    }
+  }
+
+  Text _buildAppBarTitle() {
+    return Text(widget.subCategory.nameEn,
+        style: AppTextStyles.PoppinsH3(textColor: AppColors.darkColor));
+  }
+
+  void _startSearch() {
+    ModalRoute.of(context)!
+        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _removeSearching));
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void _removeSearching() {
+    _clearSearching();
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  void _clearSearching() {
+    setState(() {
+      _searchTextController.clear();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      producItems = [
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-      ];
-    });
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: AppIcons.customIcon(iconName: "ic_back"),
-          ),
-          actions: [
-            AppIcons.customIcon(iconName: "ic_Search"),
-            SizedBox(width: 26.w),
-            AppIcons.customIcon(iconName: "ic_Notification"),
-            SizedBox(
-              width: 20.w,
-            ),
-          ],
-          title: Text(widget.category.nameEn,
-              style: AppTextStyles.PoppinsH3(textColor: AppColors.darkColor)),
+          leading: _isSearching
+              ? const BackButton(color: AppColors.primaryGreyColor)
+              : IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: AppIcons.customIcon(iconName: "ic_back"),
+                ),
+          actions: _buildAppBarActions(),
+          title: _isSearching ? _buildTextField() : _buildAppBarTitle(),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -76,21 +139,39 @@ class _ProductsInCategoryState extends State<ProductsInCategory> {
               SizedBox(
                 height: 52.h,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: ProductsGridView(
-                  products: producItems,
-                ),
-              ),
+              _buildBlocWidget(),
             ],
           ),
         ));
   }
+
+  Widget _buildLoadedGridViewWidget() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
+      child: subCategoryProducts.isNotEmpty
+          ? ProductsGridView(
+              products: _searchTextController.text.isEmpty
+                  ? subCategoryProducts
+                  : searchedForProducts,
+              productsCount: _searchTextController.text.isEmpty
+                  ? subCategoryProducts.length
+                  : searchedForProducts.length,
+            )
+          : Center(
+              child: Text('There are no products yet',
+                  style: AppTextStyles.PoppinsH3(
+                      textColor: AppColors.secondaryColor)),
+            ),
+    );
+  }
 }
 
 class ProductsGridView extends StatelessWidget {
-  const ProductsGridView({Key? key, required this.products}) : super(key: key);
+  ProductsGridView(
+      {Key? key, required this.products, required this.productsCount})
+      : super(key: key);
   final List<Product> products;
+  final int productsCount;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +184,7 @@ class ProductsGridView extends StatelessWidget {
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
-      itemCount: products.length,
+      itemCount: productsCount,
       scrollDirection: Axis.vertical,
       itemBuilder: (ctx, index) {
         return ProductCard(product: products[index]);

@@ -1,3 +1,4 @@
+import 'package:fixturez/business_logic/home_cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fixturez/core/constants/constants.dart';
 
 import '../../business_logic/cubit.dart';
+import '../../data/models/models.dart';
 import '../../data/repository/repository.dart';
 import '../../data/web_services/web_services.dart';
 import 'screens.dart';
@@ -14,9 +16,15 @@ class HomePage extends StatefulWidget {
   late CategoryRepository categoryRepository;
   late CategoriesCubit categoriesCubit;
 
+  late HomeRepository homeRepository;
+  late HomeCubit homeCubit;
+
   HomePage() {
     categoryRepository = CategoryRepository(CategoriesWebService());
     categoriesCubit = CategoriesCubit(categoryRepository);
+
+    homeRepository = HomeRepository(HomeWebService());
+    homeCubit = HomeCubit(homeRepository);
   }
 
   @override
@@ -35,13 +43,39 @@ class _HomePageState extends State<HomePage> {
     screenIndex.value = index;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // // Home home = Home();
+  // void fetchCities() async {
+  //   final homeRepository = HomeRepository(HomeWebService());
+  //   Future<Home> futureCities = homeRepository.getHome();
+
+  //   Home _cities = await futureCities;
+  //   setState(() {
+  //     // home = _cities;
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   setState(() {
+  //     fetchCities();
+  //   });
+  //   super.initState();
+  // }
 
   final screens = [
-    HomeScreen(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (BuildContext contex) => HomePage().homeCubit,
+          // child: HomeScreen(),
+        ),
+        BlocProvider<HomeCubit>(
+          create: (BuildContext contex) => HomePage().homeCubit,
+        ),
+      ],
+      child: HomeScreen(),
+    ),
+    // HomeScreen(),
     BlocProvider(
       create: (BuildContext contex) => HomePage().categoriesCubit,
       child: const CategoriesScreen(),

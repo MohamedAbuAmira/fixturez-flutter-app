@@ -21,7 +21,7 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  var heartIconColor;
+  Color heartIconColor = Colors.transparent;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,16 +30,16 @@ class _ProductCardState extends State<ProductCard> {
         InkWell(
           onDoubleTap: () {
             setState(() {
-              if (heartIconColor == null) {
+              if (heartIconColor == Colors.transparent) {
                 heartIconColor = Colors.red;
               } else {
-                heartIconColor = null;
+                heartIconColor = Colors.transparent;
               }
             });
           },
           onTap: () {
             Navigator.pushNamed(context, AppRouter.product,
-                arguments: widget.product);
+                arguments: widget.product.id);
           },
           child: Stack(children: [
             SizedBox(
@@ -55,13 +55,16 @@ class _ProductCardState extends State<ProductCard> {
                 right: 6.w,
                 child: SizedBox(
                   child: Container(
-                    width: 28.w,
-                    height: 28.h,
+                    width: 32.w,
+                    height: 32.h,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: heartIconColor),
                     child: AppIcons.customIcon(
-                        iconName: 'ic_CircleHeart',
+                        iconName: "ic_Heart",
+                        iconColor: Colors.black,
                         width: 28.w,
-                        height: 28.h,
-                        iconColor: heartIconColor),
+                        height: 28.h),
                   ),
                 )),
           ]),
@@ -81,12 +84,19 @@ class _ProductCardState extends State<ProductCard> {
             style: AppTextStyles.PoppinsFootnote(
                 textColor: AppColors.secondaryColor),
             children: <TextSpan>[
-              TextSpan(text: '\$${widget.product.offerPrice} '),
               TextSpan(
-                text: '\$${widget.product.price}',
+                text: '\$${widget.product.price} ',
                 style: AppTextStyles.PoppinsFootnote(
                     textColor: AppColors.primaryColor),
               ),
+              widget.product.offerPrice != null
+                  ? TextSpan(text: '\$${widget.product.offerPrice}')
+                  : const TextSpan(text: 'No Offer'),
+              TextSpan(
+                text: "    ${widget.product.quantity} Quantities Available",
+                style: AppTextStyles.PoppinsCaption(
+                    textColor: AppColors.primaryGreyColor),
+              )
             ],
           ),
         ),

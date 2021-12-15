@@ -5,8 +5,8 @@ abstract class CategoriesState {}
 
 class CategoriesInitial extends CategoriesState {}
 
-class CharactersLoaded extends CategoriesState {
+class CategoriesLoaded extends CategoriesState {
   final List<Category> categories;
 
-  CharactersLoaded(this.categories);
+  CategoriesLoaded(this.categories);
 }

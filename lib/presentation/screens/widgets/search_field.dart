@@ -1,12 +1,16 @@
 import 'package:fixturez/core/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({
+  SearchField({
     Key? key,
+    required this.onChange,
+    required this.searchTextController,
   }) : super(key: key);
-
+  final Function(String) onChange;
+  final TextEditingController searchTextController;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +21,8 @@ class SearchField extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: TextField(
-          onChanged: (value) => print(value),
+          controller: searchTextController,
+          onChanged: onChange,
           cursorColor: AppColors.darkColor,
           decoration: InputDecoration(
             isDense: true,
@@ -32,7 +37,7 @@ class SearchField extends StatelessWidget {
             prefixIcon: AppIcons.customIcon(
                 iconName: "ic_Search", iconColor: Colors.black),
             prefixIconConstraints:
-                BoxConstraints(maxHeight: 24.h, minWidth: 24.w),
+                BoxConstraints(maxHeight: 24.h, minWidth: 15.w),
           )),
     );
   }

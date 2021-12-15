@@ -1,3 +1,5 @@
+import 'package:fixturez/data/models/models.dart';
+
 class Product {
   late int id;
   late String nameEn;
@@ -9,9 +11,11 @@ class Product {
   late int overalRate;
   late int subCategoryId;
   late int productRate;
-  late num offerPrice;
+  late num? offerPrice;
   late bool isFavorite;
   late String imageUrl;
+  late List<ImagesSlider> images;
+  // late SubCategory? subCategory;
 
   //TODO Remove this when fetch data From API
   Product();
@@ -30,5 +34,17 @@ class Product {
     offerPrice = json['offer_price'];
     isFavorite = json['is_favorite'];
     imageUrl = json['image_url'];
+    if (json['images'] != null) {
+      images = <ImagesSlider>[];
+      json['images'].forEach((v) {
+        images.add(ImagesSlider.fromJson(v));
+      });
+    } else {
+      images = [];
+    }
+
+    // subCategory = json['sub_category'] != null
+    //     ? SubCategory.fromJson(json['sub_category'])
+    //     : null;
   }
 }

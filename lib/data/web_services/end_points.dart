@@ -4,6 +4,10 @@ class ApiEndPoints {
   static const citiesUrl = _apiUrl + "cities";
   static const categoriesUrl = _apiUrl + "categories";
 
+  static const subCategoriesUrl = _apiUrl + "sub-categories";
+  static const productUrl = _apiUrl + "products";
+
+  static const homeUrl = _apiUrl + "home";
   static const _authUrl = _apiUrl + "auth/";
   static const loginUrl = _authUrl + "login";
   static const registerUrl = _authUrl + "register";

@@ -1,3 +1,4 @@
+import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/constants.dart';
@@ -7,7 +8,9 @@ import 'widgets.dart';
 class ProductImagesSlder extends StatefulWidget {
   const ProductImagesSlder({
     Key? key,
+    required this.images,
   }) : super(key: key);
+  final List<ImagesSlider> images;
 
   @override
   State<ProductImagesSlder> createState() => _ProductImagesSlderState();
@@ -15,20 +18,26 @@ class ProductImagesSlder extends StatefulWidget {
 
 class _ProductImagesSlderState extends State<ProductImagesSlder> {
   late PageController pageViewcontroller;
-  List<SliderModel> slides = <SliderModel>[];
+
   late int currentIndex;
   @override
   void initState() {
     super.initState();
     // initilize when the screen open
 
-    slides = getSlides();
     currentIndex = 0;
     pageViewcontroller = PageController();
   }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      Future.delayed(const Duration(seconds: 3), () {
+        currentIndex <= widget.images.length
+            ? currentIndex = 2
+            : currentIndex = 3;
+      });
+    });
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
@@ -37,16 +46,23 @@ class _ProductImagesSlderState extends State<ProductImagesSlder> {
           width: double.infinity,
           child: PageView.builder(
             // controller: pageViewcontroller,
-            itemCount: slides.length,
+            itemCount: widget.images.length,
+
             onPageChanged: (value) {
               setState(() {
                 currentIndex = value;
               });
             },
             itemBuilder: (context, index) {
-              return PictureProvider(
-                image: slides[index].getImageUrl(),
-                borderRadius: 0,
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, AppRouter.product,
+                      arguments: widget.images[index].objectId);
+                },
+                child: PictureProvider(
+                  image: widget.images[index].imageUrl,
+                  borderRadius: 0,
+                ),
               );
             },
           ),
@@ -56,7 +72,7 @@ class _ProductImagesSlderState extends State<ProductImagesSlder> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              for (int i = 0; i < slides.length; i++)
+              for (int i = 0; i < widget.images.length; i++)
                 currentIndex == i
                     ? _pageIndexIndicator(true)
                     : _pageIndexIndicator(false),

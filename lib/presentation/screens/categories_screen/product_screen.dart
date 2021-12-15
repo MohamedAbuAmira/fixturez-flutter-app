@@ -1,23 +1,50 @@
+import 'package:fixturez/business_logic/cubit.dart';
 import 'package:fixturez/presentation/screens/categories_screen/widgets/review_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/models/models.dart';
 import '../widgets/widgets.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key, required this.product}) : super(key: key);
-  final Product product;
+  const ProductScreen({Key? key}) : super(key: key);
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
 }
 
-Color? heartColor;
+Color heartColor = Colors.black;
 int allReviewsCount = 142;
 double productRating = 4.35;
 
 class _ProductScreenState extends State<ProductScreen> {
+  late Product product;
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ProductCubit>(context).getProduct();
+  }
+
+  dynamic _buildBlocWidget() {
+    return BlocBuilder<ProductCubit, ProductState>(
+      builder: (context, state) {
+        if (state is ProductLoaded) {
+          product = (state).product;
+          return _buildProductDetialsWidget();
+        } else {
+          return showloadingLoaded();
+        }
+      },
+    );
+  }
+
+  Widget showloadingLoaded() {
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.secondaryColor),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,54 +65,60 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const ProductImagesSlder(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: _productInfoSection(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
-                child: _tabBarWithView(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: 16.w,
-                  top: 20.h,
-                ),
-                child: const SectionDivider(),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: _policiesSection(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 16.h, top: 16.h),
-                child: const SectionDivider(),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: _seeAllHeader(),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: SizedBox(
-                  height: 222.h,
-                  child: RecommendedProductsViewer(
-                      products: [widget.product, widget.product]),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 13.h),
-                child: _addToBagSection(),
-              )
-            ],
+        child: _buildBlocWidget(),
+      ),
+    );
+  }
+
+  Widget _buildProductDetialsWidget() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ProductImagesSlder(
+            images: product.images,
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: _productInfoSection(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+            child: _tabBarWithView(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: 16.w,
+              top: 20.h,
+            ),
+            child: const SectionDivider(),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: _policiesSection(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 16.h, top: 16.h),
+            child: const SectionDivider(),
+          ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 20.w),
+          //   child: _seeAllHeader(),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 20.w),
+          //   child: SizedBox(
+          //     height: 222.h,
+          //     child: RecommendedProductsViewer(
+          //         products: [widget.product, widget.product]),
+          //   ),
+          // ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 13.h),
+            child: _addToBagSection(),
+          )
+        ],
       ),
     );
   }
@@ -120,7 +153,11 @@ class _ProductScreenState extends State<ProductScreen> {
             child: InkWell(
                 onTap: () {
                   setState(() {
-                    heartColor = const Color.fromRGBO(244, 67, 54, 1);
+                    if (heartColor == Colors.black) {
+                      heartColor = Colors.red;
+                    } else {
+                      heartColor = Colors.black;
+                    }
                   });
                 },
                 child: AppIcons.customIcon(
@@ -244,7 +281,7 @@ class _ProductScreenState extends State<ProductScreen> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 Text(
-                  widget.product.infoEn,
+                  product.infoEn,
                   style: AppTextStyles.PoppinsBody1(
                       textColor: AppColors.primaryGreyColor),
                   maxLines: 4,
@@ -281,7 +318,7 @@ class _ProductScreenState extends State<ProductScreen> {
         Padding(
           padding: EdgeInsets.only(bottom: 4.h),
           child: Text(
-            widget.product.nameEn,
+            product.nameEn,
             style: AppTextStyles.PoppinsH2(textColor: AppColors.darkColor),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -291,12 +328,12 @@ class _ProductScreenState extends State<ProductScreen> {
           text: TextSpan(
             style: AppTextStyles.PoppinsH2(textColor: AppColors.secondaryColor),
             children: <TextSpan>[
-              TextSpan(text: '\$${widget.product.offerPrice} '),
-              TextSpan(
-                text: '\$${widget.product.price}',
-                style:
-                    AppTextStyles.PoppinsH4(textColor: AppColors.primaryColor),
-              ),
+              TextSpan(text: '\$${product.price} '),
+              // TextSpan(
+              //   text: '\$${widget.product.offerPrice}',
+              //   style:
+              //       AppTextStyles.PoppinsH4(textColor: AppColors.primaryColor),
+              // ),
             ],
           ),
         ),

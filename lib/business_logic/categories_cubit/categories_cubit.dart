@@ -13,7 +13,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
 
   List<Category> getAllCategories() {
     categoryRepository.getAllCategories().then((categories_) {
-      emit(CharactersLoaded(categories_)); //sent to ui the state
+      emit(CategoriesLoaded(categories_)); //sent to ui the state
       this.categories = categories_;
     });
 
