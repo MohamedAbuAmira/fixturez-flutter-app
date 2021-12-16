@@ -13,3 +13,5 @@ export 'categories_screen/products_in_category.dart';
 export 'categories_screen/categories_screen.dart';
 export 'categories_screen/product_screen.dart';
 export 'categories_screen/sub_categories_screen.dart';
+export 'profile_screen/update_profile_screen.dart';
+export 'profile_screen/change_password_screen.dart';

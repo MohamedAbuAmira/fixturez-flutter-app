@@ -18,6 +18,8 @@ class AppRouter {
   static const String productsInSubCategory = 'products_in_category';
   static const String subCategories = 'sub_categories_screen';
   static const String product = 'product_screen';
+  static const String updateProfile = 'update_profile_screen';
+  static const String changePassword = 'change_password_screen';
   ///////////////////////////////////////////////////////////////
 
   // AppRouter() {}
@@ -107,6 +109,14 @@ class AppRouter {
                 // product: argProduct,
                 ),
           ),
+        );
+      case updateProfile:
+        return MaterialPageRoute(
+          builder: (_) => const UpdateProfileScreen(),
+        );
+      case changePassword:
+        return MaterialPageRoute(
+          builder: (_) => const ChangePasswordScreen(),
         );
       default:
         throw const RouteException('Route not found!');

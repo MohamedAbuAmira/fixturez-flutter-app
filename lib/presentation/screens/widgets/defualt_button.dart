@@ -7,22 +7,29 @@ class DefaultButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.press,
+    this.width = double.infinity,
+    this.primaryColor = AppColors.primaryColor,
+    this.textColor = AppColors.whiteColor,
   }) : super(key: key);
   final String text;
   final VoidCallback press;
+  final double width;
+  final Color primaryColor;
+  final Color textColor;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: width,
       height: 58.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           alignment: Alignment.center,
           padding: EdgeInsets.symmetric(horizontal: 15.w),
-          primary: AppColors.primaryColor,
+          primary: primaryColor,
           onPrimary: Colors.white,
           shadowColor: AppColors.tertiaryGreyColor,
-          textStyle: AppTextStyles.PoppinsH4(textColor: AppColors.whiteColor),
+          textStyle: AppTextStyles.PoppinsH4(textColor: textColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),
           ),

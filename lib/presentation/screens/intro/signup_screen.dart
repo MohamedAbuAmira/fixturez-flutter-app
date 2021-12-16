@@ -320,6 +320,8 @@ class _SignUpFormState extends State<SignUpForm> with Helpers {
     if (authBaseResponse['status']) {
       final String activationCode = authBaseResponse['code'].toString();
 
+      SharedPrefController().saveEmail(email: _emailTextcontroller.text);
+
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushNamed(context, AppRouter.activateAccount, arguments: {
           'code': activationCode,

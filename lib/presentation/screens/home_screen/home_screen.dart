@@ -11,49 +11,12 @@ import '../../../data/models/models.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  static CategoryHome categoryHomeItem = const CategoryHome(
-    imageName: 'icon_cat_sofas',
-    productName: 'My product',
-  );
-  static List<CategoryHome> categoryHome = [
-    categoryHomeItem,
-    categoryHomeItem,
-    categoryHomeItem,
-    categoryHomeItem,
-    categoryHomeItem,
-    categoryHomeItem,
-    categoryHomeItem,
-    const CategoryHome(
-      imageName: 'icon_cat_menu',
-      productName: 'More',
-    )
-  ];
-
-  static String imageUrl =
-      "https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80";
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   late Home home;
-  List<Product> producItems = [];
-  Product get getproduct {
-    final Product product = Product();
-    product.imageUrl = HomeScreen.imageUrl;
-
-    return product;
-  }
-
-  List<Category> categoriesItems = [];
-  Category get getCategories {
-    final Category category = Category();
-    category.imageUrl = HomeScreen.imageUrl;
-    category.nameEn = "My category";
-
-    return category;
-  }
 
   @override
   void initState() {
@@ -82,25 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // buildBlocWidget();
-    setState(() {
-      producItems = [
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct,
-        getproduct
-      ];
-
-      categoriesItems = [
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories,
-        getCategories
-      ];
-    });
     return Scaffold(
         appBar: AppBar(
           title: AppIcons.customIcon(iconName: "logo"),
@@ -145,10 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
           images: home.slider,
         ),
         SizedBox(height: 20.h),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 1.w),
-          child: CategoriesHomeSection(categoryHome: HomeScreen.categoryHome),
-        ),
         ViewAllHeader(
           text: 'Next Thing On Your Mind',
           onPressed: () {},
@@ -178,45 +118,12 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.only(left: 16.w),
           child: SizedBox(height: 230.h, child: buildHeavtDiscountGridView()),
         ),
-        const SectionDivider(
-          addMargin: true,
-        ),
-        ViewAllHeader(
-          text: 'Bank Offers',
-          onPressed: () {},
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 16.w),
-          child: SizedBox(height: 174.h, child: buildBankOffersGridView()),
-        ),
-        const SectionDivider(
-          addMargin: true,
-        ),
-        ViewAllHeader(
-          text: 'Work From Home',
-          onPressed: () {},
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 16.w),
-          child: SizedBox(height: 196.h, child: buildWorkFromHomeGridView()),
-        ),
-        const SectionDivider(
-          addMargin: true,
-        ),
       ],
     );
   }
 
-  Widget buildBankOffersGridView() {
-    return BankOffersViewer(products: producItems);
-  }
-
   Widget buildeveryoneWowGridView() {
     return EveryoneWowViewer(products: home.latestProducts);
-  }
-
-  Widget buildWorkFromHomeGridView() {
-    return WorkFromHomeViewer(products: producItems);
   }
 
   Widget buildHeavtDiscountGridView() {

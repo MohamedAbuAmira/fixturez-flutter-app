@@ -1,4 +1,5 @@
 import 'package:fixturez/core/constants/constants.dart';
+import 'package:fixturez/presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/prefs/shared_pref_controller.dart';
@@ -22,69 +23,213 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () async => await performLogout(),
               icon: Icon(Icons.logout))
         ],
-        title: Text("Profile"),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(6.r)),
-              child: AppIcons.customIcon(iconName: "ic_user_placeholder"),
-            ),
-            Text("Email"),
-            Text("name"),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.r),
-                  border: Border.all(width: 1, color: AppColors.primaryColor)),
-              child: Text("Edit Profile"),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  Text("Profile"),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_order',
-                      itemName: 'My Orders',
-                      onpress: () {}),
-                  const Divider(
-                    color: AppColors.secondaryGreyColor,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(6.r)),
+                child: AppIcons.customIcon(iconName: "ic_user_placeholder"),
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              Text(SharedPrefController().fullName,
+                  style: AppTextStyles.PoppinsH4(
+                      textColor: AppColors.darkColor, isSemiBold: true)),
+              SizedBox(
+                height: 1.h,
+              ),
+              Text(SharedPrefController().email,
+                  style:
+                      AppTextStyles.PoppinsH4(textColor: AppColors.darkColor)),
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                width: 120.w,
+                height: 40.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    border:
+                        Border.all(width: 1, color: AppColors.primaryColor)),
+                child: TextButton(
+                  child: Text(
+                    "Edit Profile",
+                    style: AppTextStyles.PoppinsSubtitle(
+                        textColor: AppColors.primaryColor),
                   ),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_password',
-                      itemName: 'Change Password',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_help_center',
-                      itemName: 'Settings',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_share',
-                      itemName: 'Refer & Earn',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_support',
-                      itemName: 'Customer Support',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_faq',
-                      itemName: 'FAQs',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_privacy',
-                      itemName: 'Privacy Policy',
-                      onpress: () {}),
-                  _tabButtonItem(
-                      ItemIconName: 'profile_logout',
-                      itemName: 'Log out',
-                      onpress: () {}),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRouter.updateProfile);
+                  },
+                ),
+              ),
+              _buttonsUserProfile(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding _buttonsUserProfile() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Profile",
+            style: AppTextStyles.PoppinsSubtitle(
+                textColor: AppColors.darkColor, isMedium: false),
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_order',
+              itemName: 'My Orders',
+              onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_password',
+              itemName: 'Change Password',
+              onpress: () {
+                Navigator.pushNamed(context, AppRouter.changePassword);
+              }),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_help_center',
+              itemName: 'Settings',
+              onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_share',
+              itemName: 'Refer & Earn',
+              onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_support',
+              itemName: 'Customer Support',
+              onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_faq', itemName: 'FAQs', onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+              ItemIconName: 'profile_privacy',
+              itemName: 'Privacy Policy',
+              onpress: () {}),
+          const Divider(
+            color: AppColors.secondaryGreyColor,
+          ),
+          _tabButtonItem(
+            ItemIconName: 'profile_logout',
+            itemName: 'Log out',
+            onpress: () {
+              _logoutModalSheet();
+            },
+          ),
+          SizedBox(
+            height: 85.h,
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> _logoutModalSheet() {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.r),
+                  topRight: Radius.circular(30.r))),
+          height: 200,
+          color: Colors.white,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 2.h, 20.w, 20.h),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    width: 5.w,
+                    height: 44.h,
+                    color: AppColors.primaryGreyColor,
+                  ),
+                  Text('Log Out',
+                      style: AppTextStyles.PoppinsH2(
+                          textColor: AppColors.darkColor)),
+                  Text('Are you sure you want to log out?',
+                      style: AppTextStyles.PoppinsH2(
+                          textColor: AppColors.primaryGreyColor)),
+                  DefaultButton(
+                    text: "Yes, lou Out",
+                    press: () async => await performLogout(),
+                  ),
+                  DefaultButton(
+                    primaryColor: AppColors.tertiaryGreyColor,
+                    textColor: AppColors.primaryGreyColor,
+                    text: "Cancel",
+                    press: () => Navigator.pop(context),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _tabButtonItem(
+      {required String ItemIconName,
+      required String itemName,
+      required VoidCallback onpress}) {
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              AppIcons.customIcon(iconName: ItemIconName),
+              SizedBox(
+                width: 6.w,
+              ),
+              Text(
+                itemName,
+                style: AppTextStyles.PoppinsSubtitle(
+                    textColor: AppColors.darkColor),
+              ),
+            ],
+          ),
+          IconButton(
+            icon: AppIcons.customIcon(
+                iconName: "ic_right(1)", iconColor: AppColors.darkColor),
+            onPressed: onpress,
+          ),
+        ],
       ),
     );
   }
@@ -102,25 +247,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       // print('error');
     }
-  }
-
-  Widget _tabButtonItem(
-      {required String itemName,
-      required String ItemIconName,
-      required VoidCallback onpress}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppIcons.customIcon(iconName: ItemIconName),
-        SizedBox(
-          width: 4.w,
-        ),
-        Text(ItemIconName),
-        IconButton(
-          icon: AppIcons.customIcon(iconName: "ic_right(1)"),
-          onPressed: onpress,
-        ),
-      ],
-    );
   }
 }

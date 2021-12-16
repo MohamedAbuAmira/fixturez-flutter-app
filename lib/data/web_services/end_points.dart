@@ -15,4 +15,7 @@ class ApiEndPoints {
   static const logoutUrl = _authUrl + "logout";
   static const forgotPasswordUrl = _authUrl + "forget-password";
   static const resetPasswordUrl = _authUrl + "reset-password";
+
+  static const updateProfileUrl = _authUrl + "update-profile";
+  static const changePasswordUrl = _authUrl + "change-password";
 }

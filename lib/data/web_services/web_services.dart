@@ -6,3 +6,4 @@ export 'categories_web_services.dart';
 export 'sub_categories_web_service.dart';
 export 'sub_category_products_web_service.dart';
 export 'product_web_service.dart';
+export 'update_profile_web_service.dart';
