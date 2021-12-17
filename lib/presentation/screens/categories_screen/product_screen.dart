@@ -287,16 +287,22 @@ class _ProductScreenState extends State<ProductScreen> {
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                 ),
-                ReviewTabBarView(
-                  productRating: productRating,
-                  reviewsCount: allReviewsCount,
+                Text(
+                  'No Reviews Yet',
+                  style: AppTextStyles.PoppinsBody1(
+                      textColor: AppColors.primaryGreyColor),
+                  textAlign: TextAlign.center,
                 ),
+                // ReviewTabBarView(
+                //   productRating: productRating,
+                //   reviewsCount: allReviewsCount,
+                // ),
                 Text(
                   'No information',
                   style: AppTextStyles.PoppinsBody1(
                       textColor: AppColors.primaryGreyColor),
                   textAlign: TextAlign.center,
-                )
+                ),
               ],
             ),
           ),

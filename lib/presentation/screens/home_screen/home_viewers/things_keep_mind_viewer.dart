@@ -60,7 +60,9 @@ class CategoryItem extends StatelessWidget {
             Positioned(
                 bottom: 8.h,
                 child: Text(
+
                   category.nameEn,
+
                   style: AppTextStyles.PoppinsSubtitle(
                       textColor: AppColors.whiteColor),
                 ))

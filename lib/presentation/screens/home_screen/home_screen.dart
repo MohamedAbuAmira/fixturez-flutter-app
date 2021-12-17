@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {},
         ),
         Padding(
-          padding: EdgeInsets.only(left: 16.w),
+          padding: EdgeInsets.only(left: 16.w, bottom: 5.h),
           child: SizedBox(height: 230.h, child: buildHeavtDiscountGridView()),
         ),
       ],
