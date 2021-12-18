@@ -17,38 +17,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () async => await performLogout(), icon: Icon(Icons.logout))
-        ],
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(onPressed: () async => await performLogout(), icon: Icon(Icons.logout))
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(6.r)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(6.r)),
                 child: AppIcons.customIcon(iconName: "ic_user_placeholder"),
               ),
               SizedBox(
                 height: 12.h,
               ),
-              Text(SharedPrefController().fullName, style: AppTextStyles.PoppinsH4(textColor: AppColors.darkColor, isSemiBold: true)),
+              Text(SharedPrefController().fullName,
+                  style: AppTextStyles.PoppinsH4(
+                      textColor: AppColors.darkColor, isSemiBold: true)),
               SizedBox(
                 height: 1.h,
               ),
-              Text(SharedPrefController().email, style: AppTextStyles.PoppinsH4(textColor: AppColors.darkColor)),
+              Text(SharedPrefController().email,
+                  style:
+                      AppTextStyles.PoppinsH4(textColor: AppColors.darkColor)),
               SizedBox(
                 height: 10.h,
               ),
               Container(
                 width: 120.w,
                 height: 40.h,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.r), border: Border.all(width: 1, color: AppColors.primaryColor)),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    border:
+                        Border.all(width: 1, color: AppColors.primaryColor)),
                 child: TextButton(
                   child: Text(
                     "Edit Profile",
-                    style: AppTextStyles.PoppinsSubtitle(textColor: AppColors.primaryColor),
+                    style: AppTextStyles.PoppinsSubtitle(
+                        textColor: AppColors.primaryColor),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, AppRouter.updateProfile);
@@ -72,12 +81,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Text(
             "Profile",
-            style: AppTextStyles.PoppinsSubtitle(textColor: AppColors.darkColor, isMedium: false),
+            style: AppTextStyles.PoppinsSubtitle(
+                textColor: AppColors.darkColor, isMedium: false),
           ),
           SizedBox(
             height: 5.h,
           ),
-          _tabButtonItem(ItemIconName: 'profile_order', itemName: 'My Orders', onpress: () {}),
+          _tabButtonItem(
+              ItemIconName: 'profile_order',
+              itemName: 'My Orders',
+              onpress: () {}),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
@@ -90,23 +103,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
-          _tabButtonItem(ItemIconName: 'profile_help_center', itemName: 'Settings', onpress: () {}),
+          _tabButtonItem(
+              ItemIconName: 'profile_help_center',
+              itemName: 'Settings',
+              onpress: () {}),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
-          _tabButtonItem(ItemIconName: 'profile_share', itemName: 'Refer & Earn', onpress: () {}),
+          _tabButtonItem(
+            ItemIconName: 'profile_share',
+            itemName: 'Refer & Earn',
+            onpress: () {
+              Navigator.pushNamed(context, AppRouter.share);
+            },
+          ),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
-          _tabButtonItem(ItemIconName: 'profile_support', itemName: 'Customer Support', onpress: () {}),
+          _tabButtonItem(
+              ItemIconName: 'profile_support',
+              itemName: 'Customer Support',
+              onpress: () {}),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
-          _tabButtonItem(ItemIconName: 'profile_faq', itemName: 'FAQs', onpress: () {}),
+          _tabButtonItem(
+              ItemIconName: 'profile_faq', itemName: 'FAQs', onpress: () {}),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
-          _tabButtonItem(ItemIconName: 'profile_privacy', itemName: 'Privacy Policy', onpress: () {}),
+          _tabButtonItem(
+              ItemIconName: 'profile_privacy',
+              itemName: 'Privacy Policy',
+              onpress: () {}),
           const Divider(
             color: AppColors.secondaryGreyColor,
           ),
@@ -131,7 +160,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context) {
         return Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(30.r), topRight: Radius.circular(30.r))),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.r),
+                  topRight: Radius.circular(30.r))),
           height: 280.h,
           child: Center(
             child: Padding(
@@ -147,11 +180,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Log Out', style: AppTextStyles.PoppinsH2(textColor: AppColors.darkColor)),
+                    child: Text('Log Out',
+                        style: AppTextStyles.PoppinsH2(
+                            textColor: AppColors.darkColor)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Are you sure you want to log out?', style: AppTextStyles.PoppinsH2(textColor: AppColors.primaryGreyColor)),
+                    child: Text('Are you sure you want to log out?',
+                        style: AppTextStyles.PoppinsH2(
+                            textColor: AppColors.primaryGreyColor)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -178,7 +215,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _tabButtonItem({required String ItemIconName, required String itemName, required VoidCallback onpress}) {
+  Widget _tabButtonItem(
+      {required String ItemIconName,
+      required String itemName,
+      required VoidCallback onpress}) {
     return SizedBox(
       width: double.infinity,
       child: Row(
@@ -193,12 +233,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Text(
                 itemName,
-                style: AppTextStyles.PoppinsSubtitle(textColor: AppColors.darkColor),
+                style: AppTextStyles.PoppinsSubtitle(
+                    textColor: AppColors.darkColor),
               ),
             ],
           ),
           IconButton(
-            icon: AppIcons.customIcon(iconName: "ic_right(1)", iconColor: AppColors.darkColor),
+            icon: AppIcons.customIcon(
+                iconName: "ic_right(1)", iconColor: AppColors.darkColor),
             onPressed: onpress,
           ),
         ],

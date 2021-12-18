@@ -7,6 +7,8 @@ class ApiEndPoints {
   static const subCategoriesUrl = _apiUrl + "sub-categories";
   static const productUrl = _apiUrl + "products";
 
+  static const favoritestUrl = _apiUrl + "favorite-products";
+
   static const homeUrl = _apiUrl + "home";
   static const _authUrl = _apiUrl + "auth/";
   static const loginUrl = _authUrl + "login";

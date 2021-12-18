@@ -1,4 +1,5 @@
 import 'package:fixturez/business_logic/cubit.dart';
+import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:fixturez/presentation/screens/categories_screen/widgets/review_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ class ProductScreen extends StatefulWidget {
   _ProductScreenState createState() => _ProductScreenState();
 }
 
+bool isFavorited = false;
 Color heartColor = Colors.black;
 int allReviewsCount = 142;
 double productRating = 4.35;
@@ -31,6 +33,10 @@ class _ProductScreenState extends State<ProductScreen> {
       builder: (context, state) {
         if (state is ProductLoaded) {
           product = (state).product;
+          setState(() {
+            isFavorited = product.isFavorite;
+          });
+
           return _buildProductDetialsWidget();
         } else {
           return showloadingLoaded();
@@ -56,9 +62,17 @@ class _ProductScreenState extends State<ProductScreen> {
           icon: AppIcons.customIcon(iconName: "ic_back"),
         ),
         actions: [
-          AppIcons.customIcon(iconName: "ic_share"),
-          SizedBox(width: 26.w),
-          AppIcons.customIcon(iconName: "ic_cart"),
+          IconButton(
+            icon: AppIcons.customIcon(iconName: "ic_share"),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.share);
+            },
+          ),
+          SizedBox(width: 10.w),
+          IconButton(
+            icon: AppIcons.customIcon(iconName: "ic_cart"),
+            onPressed: () {},
+          ),
           SizedBox(
             width: 20.w,
           ),
@@ -150,17 +164,18 @@ class _ProductScreenState extends State<ProductScreen> {
         Container(
             height: 59.h,
             width: 59.w,
-            child: InkWell(
-                onTap: () {
+            child: IconButton(
+                onPressed: () {
                   setState(() {
-                    if (heartColor == Colors.black) {
+                    isFavorited = !true;
+                    if (isFavorited) {
                       heartColor = Colors.red;
                     } else {
                       heartColor = Colors.black;
                     }
                   });
                 },
-                child: AppIcons.customIcon(
+                icon: AppIcons.customIcon(
                     iconName: 'ic_Heart', iconColor: heartColor)),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.r),

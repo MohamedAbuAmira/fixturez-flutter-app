@@ -43,25 +43,6 @@ class _HomePageState extends State<HomePage> {
     screenIndex.value = index;
   }
 
-  // // Home home = Home();
-  // void fetchCities() async {
-  //   final homeRepository = HomeRepository(HomeWebService());
-  //   Future<Home> futureCities = homeRepository.getHome();
-
-  //   Home _cities = await futureCities;
-  //   setState(() {
-  //     // home = _cities;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   setState(() {
-  //     fetchCities();
-  //   });
-  //   super.initState();
-  // }
-
   final screens = [
     MultiBlocProvider(
       providers: [

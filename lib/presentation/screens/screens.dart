@@ -15,3 +15,6 @@ export 'categories_screen/product_screen.dart';
 export 'categories_screen/sub_categories_screen.dart';
 export 'profile_screen/update_profile_screen.dart';
 export 'profile_screen/change_password_screen.dart';
+export 'profile_screen/favorites_screen.dart';
+export 'profile_screen/notifications_screen.dart';
+export 'profile_screen/share_screen.dart';

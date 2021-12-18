@@ -20,6 +20,9 @@ class AppRouter {
   static const String product = 'product_screen';
   static const String updateProfile = 'update_profile_screen';
   static const String changePassword = 'change_password_screen';
+  static const String favorites = 'favorites_screen';
+  static const String notifications = 'notifications_screen';
+  static const String share = 'share_screen';
   ///////////////////////////////////////////////////////////////
 
   // AppRouter() {}
@@ -117,6 +120,25 @@ class AppRouter {
       case changePassword:
         return MaterialPageRoute(
           builder: (_) => const ChangePasswordScreen(),
+        );
+
+      case favorites:
+        final favoritesRepository = FavoritesRepository(FavoritesWebService());
+        final favoritesCubit = FavoritesCubit(favoritesRepository);
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (BuildContext contex) => favoritesCubit,
+            child: FavoritesScreen(),
+          ),
+        );
+
+      case notifications:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationsScreen(),
+        );
+      case share:
+        return MaterialPageRoute(
+          builder: (_) => const ShareScreen(),
         );
       default:
         throw const RouteException('Route not found!');

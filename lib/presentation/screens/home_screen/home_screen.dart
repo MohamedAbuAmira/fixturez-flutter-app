@@ -1,3 +1,4 @@
+import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../business_logic/cubit.dart';
@@ -54,9 +55,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 iconName: "ic_Burger", width: 24.w, height: 24.h),
           ),
           actions: [
-            AppIcons.customIcon(iconName: "ic_Heart"),
-            SizedBox(width: 26.w),
-            AppIcons.customIcon(iconName: "ic_Notification"),
+            IconButton(
+              icon: AppIcons.customIcon(iconName: "ic_Heart"),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRouter.favorites);
+              },
+            ),
+            SizedBox(width: 5.w),
+            IconButton(
+              icon: AppIcons.customIcon(
+                iconName: "ic_Notification",
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRouter.notifications);
+              },
+            ),
             SizedBox(
               width: 20.w,
             ),

@@ -16,6 +16,7 @@ class Product {
   late String imageUrl;
   late List<ImagesSlider> images;
   // late SubCategory? subCategory;
+  // late Pivot pivot;
 
   //TODO Remove this when fetch data From API
   Product();
@@ -46,5 +47,21 @@ class Product {
     // subCategory = json['sub_category'] != null
     //     ? SubCategory.fromJson(json['sub_category'])
     //     : null;
+    // if (json['pivot'] != null) {
+    //   Pivot.fromJson(json['pivot']);
+    // } else {
+    //   pivot = Pivot.fromJson({"user_id": '', "product_id": ''});
+    // }
+    // pivot = (json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null)!;
+  }
+}
+
+class Pivot {
+  late int userId;
+  late int productId;
+
+  Pivot.fromJson(Map<String, dynamic> json) {
+    userId = json['user_id'];
+    productId = json['product_id'];
   }
 }
