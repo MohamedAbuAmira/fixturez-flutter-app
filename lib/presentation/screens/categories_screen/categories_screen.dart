@@ -50,7 +50,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         actions: [
           AppIcons.customIcon(iconName: "ic_Search"),
           SizedBox(width: 26.w),
-          AppIcons.customIcon(iconName: "ic_Notification"),
+          IconButton(
+            icon: AppIcons.customIcon(
+              iconName: "ic_Notification",
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.notifications);
+            },
+          ),
           SizedBox(
             width: 20.w,
           ),
@@ -92,14 +99,15 @@ class CategoriesGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          crossAxisSpacing: 12.h,
-          mainAxisSpacing: 8.w),
+    return ListView.builder(
+      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //
+      //     crossAxisCount: 2,
+      //     childAspectRatio: 1,
+      //     crossAxisSpacing: 0,
+      //     mainAxisSpacing: 0),
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
       itemCount: categories.length,
       scrollDirection: Axis.vertical,
@@ -119,60 +127,64 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, AppRouter.subCategories,
-                arguments: category);
-          },
-          child: Container(
-            height: 190.h,
-            width: 162.w,
-            decoration: BoxDecoration(
-                border:
-                    Border.all(color: AppColors.tertiaryGreyColor, width: 1),
-                borderRadius: BorderRadius.circular(20.r)),
-            alignment: Alignment.center,
-            child: PictureProvider(image: category.imageUrl),
+    return Padding(
+      padding:  EdgeInsets.only(bottom: 5.h),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, AppRouter.subCategories,
+                  arguments: category);
+            },
+            child: Container(
+              height: 190.h,
+              width: 162.w,
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors.tertiaryGreyColor, width: 1),
+                  borderRadius: BorderRadius.circular(20.r)),
+              alignment: Alignment.center,
+              child: PictureProvider(image: category.imageUrl),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 8.h,
-        ),
-        Text(
-          category.nameEn,
-          maxLines: 1,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.PoppinsH4(
-              textColor: AppColors.darkColor, isSemiBold: true),
-        ),
-        SizedBox(
-          height: 4.h,
-        ),
-        RichText(
-          text: TextSpan(
-            style: AppTextStyles.PoppinsFootnote(
-                textColor: AppColors.secondaryColor),
-            children: <TextSpan>[
-              TextSpan(
-                text: '${category.productsCount}+ Products',
-                style: AppTextStyles.PoppinsFootnote(
-                    textColor: AppColors.primaryColor),
-              ),
-              TextSpan(
-                text: " - ${category.subCategoriesCount} Includes Categories",
-                style: AppTextStyles.PoppinsCaption(
-                    textColor: AppColors.primaryGreyColor),
-              )
-            ],
+          SizedBox(
+            height: 8.h,
           ),
-        ),
-        // Text('${category.productsCount}+ Products',
-        //     style: AppTextStyles.PoppinsFootnote(
-        //         textColor: AppColors.primaryGreyColor)),
-      ],
+          Text(
+            category.nameEn,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.PoppinsH4(
+                textColor: AppColors.darkColor, isSemiBold: true),
+          ),
+          SizedBox(
+            height: 4.h,
+          ),
+          RichText(
+            text: TextSpan(
+              style: AppTextStyles.PoppinsFootnote(
+                  textColor: AppColors.secondaryColor),
+              children: <TextSpan>[
+                TextSpan(
+                  text: '${category.productsCount}+ Products',
+                  style: AppTextStyles.PoppinsFootnote(
+                      textColor: AppColors.primaryColor),
+                ),
+                TextSpan(
+                  text: " - ${category.subCategoriesCount} Includes Categories",
+                  style: AppTextStyles.PoppinsCaption(
+                      textColor: AppColors.primaryGreyColor),
+                )
+              ],
+            ),
+          ),
+          // Text('${category.productsCount}+ Products',
+          //     style: AppTextStyles.PoppinsFootnote(
+          //         textColor: AppColors.primaryGreyColor)),
+        ],
+      ),
     );
   }
 }

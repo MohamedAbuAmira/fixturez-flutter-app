@@ -139,7 +139,7 @@ class _ProductsInCategoryState extends State<ProductsInCategory> {
               SizedBox(
                 height: 52.h,
               ),
-              _buildBlocWidget(),
+              Center(child: _buildBlocWidget()),
             ],
           ),
         ));
@@ -175,12 +175,12 @@ class ProductsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          crossAxisSpacing: 11.h,
-          mainAxisSpacing: 16.w),
+    return ListView.builder(
+      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //     crossAxisCount: 2,
+      //     childAspectRatio: 1,
+      //     crossAxisSpacing: 11.h,
+      //     mainAxisSpacing: 16.w),
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,

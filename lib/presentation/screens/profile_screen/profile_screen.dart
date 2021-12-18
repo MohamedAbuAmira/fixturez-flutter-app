@@ -17,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       // appBar: AppBar(
       //   actions: [
       //     IconButton(onPressed: () async => await performLogout(), icon: Icon(Icons.logout))

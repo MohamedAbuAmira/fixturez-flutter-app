@@ -63,7 +63,7 @@ class CategoryItem extends StatelessWidget {
 
                   category.nameEn,
 
-                  style: AppTextStyles.PoppinsSubtitle(
+                  style: AppTextStyles.PoppinsCaption(
                       textColor: AppColors.whiteColor),
                 ))
           ],

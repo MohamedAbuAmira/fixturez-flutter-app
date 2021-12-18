@@ -48,29 +48,26 @@ class _ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, AppRouter.subCategories,
-            arguments: category);
-      },
-      child: Container(
-        child: Stack(
-            clipBehavior: Clip.antiAlias,
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 205.w,
-                height: 230.h,
-                margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
-                child: InkWell(
-                    onTap: () {},
-                    child: PictureProvider(image: category.imageUrl)),
-              ),
-              Text(category.nameEn,
-                  style:
-                      AppTextStyles.PoppinsH2(textColor: AppColors.whiteColor)),
-            ]),
-      ),
+    return Container(
+      child: Stack(
+          clipBehavior: Clip.antiAlias,
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 240.w,
+              height: 240.h,
+              margin: EdgeInsetsDirectional.fromSTEB(4.w, 0, 4.w, 0),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouter.subCategories,
+                        arguments: category);
+                  },
+                  child: PictureProvider(image: category.imageUrl)),
+            ),
+            Text(category.nameEn,
+                style:
+                    AppTextStyles.PoppinsH4(textColor: AppColors.whiteColor)),
+          ]),
     );
   }
 }

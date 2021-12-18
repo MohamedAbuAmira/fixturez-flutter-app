@@ -1,4 +1,5 @@
 import 'package:fixturez/business_logic/cubit.dart';
+import 'package:fixturez/data/web_services/web_services.dart';
 import 'package:fixturez/presentation/router/app_router.dart';
 import 'package:fixturez/presentation/screens/categories_screen/widgets/review_tab_bar_view.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class ProductScreen extends StatefulWidget {
 
 bool isFavorited = false;
 Color heartColor = Colors.black;
-int allReviewsCount = 142;
+int allReviewsCount = 0;
 double productRating = 4.35;
 
 class _ProductScreenState extends State<ProductScreen> {
@@ -33,9 +34,12 @@ class _ProductScreenState extends State<ProductScreen> {
       builder: (context, state) {
         if (state is ProductLoaded) {
           product = (state).product;
-          setState(() {
-            isFavorited = product.isFavorite;
-          });
+          isFavorited = product.isFavorite;
+          if (isFavorited) {
+            heartColor = Colors.red;
+          } else {
+            heartColor = Colors.black;
+          }
 
           return _buildProductDetialsWidget();
         } else {
@@ -157,6 +161,11 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
+  Future<void> setFavorite() async {
+    bool status = await FavoritesWebService()
+        .setFavorite(context, idProduct: product.id.toString());
+  }
+
   Row _addToBagSection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,16 +174,7 @@ class _ProductScreenState extends State<ProductScreen> {
             height: 59.h,
             width: 59.w,
             child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    isFavorited = !true;
-                    if (isFavorited) {
-                      heartColor = Colors.red;
-                    } else {
-                      heartColor = Colors.black;
-                    }
-                  });
-                },
+                onPressed: () async => await setFavorite(),
                 icon: AppIcons.customIcon(
                     iconName: 'ic_Heart', iconColor: heartColor)),
             decoration: BoxDecoration(

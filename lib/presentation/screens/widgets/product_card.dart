@@ -1,3 +1,4 @@
+import 'package:fixturez/data/web_services/web_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/constants.dart';
@@ -21,21 +22,25 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  Color heartIconColor = Colors.transparent;
+  late bool isFavourites;
+  late Color heartIconColor;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bool isFavourites = widget.product.isFavorite;
+    heartIconColor = isFavourites ? Colors.red : Colors.transparent;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onDoubleTap: () {
-            setState(() {
-              if (heartIconColor == Colors.transparent) {
-                heartIconColor = Colors.red;
-              } else {
-                heartIconColor = Colors.transparent;
-              }
-            });
+          onDoubleTap: () async {
+            await setFavorite();
           },
           onTap: () {
             Navigator.pushNamed(context, AppRouter.product,
@@ -102,5 +107,10 @@ class _ProductCardState extends State<ProductCard> {
         ),
       ],
     );
+  }
+
+  Future<void> setFavorite() async {
+    bool status = await FavoritesWebService()
+        .setFavorite(context, idProduct: widget.product.id.toString());
   }
 }
