@@ -7,9 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Do
+  // Do from 
   await SharedPrefController().initSharedPref();
-  // End
+  // to End
   runApp(const App());
 }
 
